@@ -3,27 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ระบบติดตามรายเดือน - เตาชีวมวล</title>
+  <title>ระบบติดตามรายเดือน</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light" style="font-family: 'Sarabun', sans-serif;">
 
   <div class="container mt-4 mb-5" style="max-width: 600px;">
-    
     <div class="d-flex justify-content-between align-items-center mb-3 bg-white p-3 rounded shadow-sm border-start border-5 border-primary">
-      <div>
-        <h6 class="mb-0">ผู้ใช้งาน: <span id="displayUser" class="text-primary fw-bold"></span></h6>
-      </div>
+      <div><h6 class="mb-0 text-primary fw-bold">ผู้ใช้งาน: <span id="displayUser"></span></h6></div>
       <a href="index.html" class="btn btn-outline-secondary btn-sm">กลับหน้าหลัก</a>
     </div>
 
     <ul class="nav nav-tabs mb-3">
-      <li class="nav-item">
-        <button class="nav-link active fw-bold text-secondary" onclick="switchTab('t4', '4_Tracking_Before')">ก่อนใช้เตา (ตาราง 4)</button>
-      </li>
-      <li class="nav-item">
-        <button class="nav-link text-secondary" onclick="switchTab('t5', '5_Tracking_After')">หลังใช้เตา (ตาราง 5)</button>
-      </li>
+      <li class="nav-item"><button class="nav-link active fw-bold" onclick="switchTab('t4', '4_Tracking_Before')">ก่อนใช้เตา</button></li>
+      <li class="nav-item"><button class="nav-link" onclick="switchTab('t5', '5_Tracking_After')">หลังใช้เตา</button></li>
     </ul>
 
     <div id="t4" class="tab-content">
@@ -32,7 +25,7 @@
         <div class="card-body">
           <form id="form_4_Tracking_Before" onsubmit="submitData(event, '4_Tracking_Before')">
             <div class="row mb-3">
-              <div class="col-6"><label>ปี (พ.ศ.)</label><input type="number" class="form-control" name="year" value="2568" required></div>
+              <div class="col-6"><label>ปี (พ.ศ.)</label><input type="number" class="form-control" name="year" value="2569" required onchange="fetchTrackingData('4_Tracking_Before')"></div>
               <div class="col-6"><label>เดือน</label>
                 <select class="form-select" name="month" onchange="fetchTrackingData('4_Tracking_Before')">
                   <option value="ม.ค.">ม.ค.</option><option value="ก.พ.">ก.พ.</option><option value="มี.ค.">มี.ค.</option>
@@ -40,22 +33,18 @@
                 </select>
               </div>
             </div>
-            
             <div class="row mb-3">
               <div class="col-6"><label>ค่าสารเคมี (บาท)</label><input type="number" class="form-control t4-cost" name="track_pest"></div>
-              <div class="col-6"><label>ค่าปุ๋ยเคมี (บาท)</label><input type="number" class="form-control t4-cost" name="track_chem_fert"></div>
+              <div class="col-6"><label>ค่าปุ๋ยเคมี</label><input type="number" class="form-control t4-cost" name="track_chem_fert"></div>
             </div>
-            
             <div class="row mb-3">
               <div class="col-6"><label>ค่าปุ๋ยน้ำ/ฮอร์โมน</label><input type="number" class="form-control t4-cost" name="track_liq_fert"></div>
-              <div class="col-6"><label>ค่าจ้างแรงงาน</label><input type="number" class="form-control t4-cost" name="track_labor"></div>
+              <div class="col-6"><label>ค่าแรงงาน</label><input type="number" class="form-control t4-cost" name="track_labor"></div>
             </div>
-
             <div class="row mb-3">
-              <div class="col-6"><label>ค่าใช้จ่ายอื่นๆ</label><input type="number" class="form-control t4-cost" name="track_other"></div>
-              <div class="col-6"><label>รวมต้นทุน (บาท)</label><input type="number" class="form-control bg-light text-danger fw-bold" name="track_total" id="t4_total" readonly></div>
+              <div class="col-6"><label>ค่าอื่นๆ</label><input type="number" class="form-control t4-cost" name="track_other"></div>
+              <div class="col-6"><label>รวม (บาท)</label><input type="number" class="form-control bg-light text-danger fw-bold" name="track_total" id="t4_total" readonly></div>
             </div>
-
             <button type="submit" class="btn btn-secondary w-100">บันทึกข้อมูลเดือนนี้</button>
           </form>
         </div>
@@ -68,7 +57,7 @@
         <div class="card-body">
           <form id="form_5_Tracking_After" onsubmit="submitData(event, '5_Tracking_After')">
              <div class="row mb-3">
-              <div class="col-6"><label>ปี (พ.ศ.)</label><input type="number" class="form-control" name="year" value="2569" required></div>
+              <div class="col-6"><label>ปี (พ.ศ.)</label><input type="number" class="form-control" name="year" value="2569" required onchange="fetchTrackingData('5_Tracking_After')"></div>
               <div class="col-6"><label>เดือน</label>
                 <select class="form-select" name="month" onchange="fetchTrackingData('5_Tracking_After')">
                   <option value="ม.ค.">ม.ค.</option><option value="ก.พ.">ก.พ.</option><option value="มี.ค.">มี.ค.</option>
@@ -76,26 +65,22 @@
                 </select>
               </div>
             </div>
-
             <div class="row mb-3 p-2 bg-light rounded">
               <div class="col-6"><label class="text-success fw-bold">มูลค่าน้ำส้มควันไม้</label><input type="number" class="form-control border-success" name="track_wood_vinegar"></div>
               <div class="col-6"><label class="text-success fw-bold">มูลค่าถ่านไบโอชาร์</label><input type="number" class="form-control border-success" name="track_biochar"></div>
             </div>
-
              <div class="row mb-3">
               <div class="col-6"><label>ค่าสารเคมี (บาท)</label><input type="number" class="form-control t5-cost" name="track_pest"></div>
-              <div class="col-6"><label>ค่าปุ๋ยเคมี (บาท)</label><input type="number" class="form-control t5-cost" name="track_chem_fert"></div>
+              <div class="col-6"><label>ค่าปุ๋ยเคมี</label><input type="number" class="form-control t5-cost" name="track_chem_fert"></div>
             </div>
             <div class="row mb-3">
               <div class="col-6"><label>ค่าปุ๋ยน้ำ/ฮอร์โมน</label><input type="number" class="form-control t5-cost" name="track_liq_fert"></div>
-              <div class="col-6"><label>ค่าจ้างแรงงาน</label><input type="number" class="form-control t5-cost" name="track_labor"></div>
+              <div class="col-6"><label>ค่าแรงงาน</label><input type="number" class="form-control t5-cost" name="track_labor"></div>
             </div>
-
             <div class="row mb-3">
-              <div class="col-6"><label>ค่าใช้จ่ายอื่นๆ</label><input type="number" class="form-control t5-cost" name="track_other"></div>
-              <div class="col-6"><label>รวมต้นทุนใหม่ (บาท)</label><input type="number" class="form-control bg-light text-danger fw-bold" name="track_total" id="t5_total" readonly></div>
+              <div class="col-6"><label>ค่าอื่นๆ</label><input type="number" class="form-control t5-cost" name="track_other"></div>
+              <div class="col-6"><label>รวม (บาท)</label><input type="number" class="form-control bg-light text-danger fw-bold" name="track_total" id="t5_total" readonly></div>
             </div>
-            
             <button type="submit" class="btn btn-primary w-100">บันทึกข้อมูลเดือนนี้</button>
           </form>
         </div>
@@ -104,27 +89,22 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbznwTBduitkVB41HjVgZH1f5JKFsPcpwqO9_uoqF-beG8TAvU3ZfzAgdjQUyJtue0CBQQ/exec"; // เปลี่ยนเป็น URL ของคุณ
+    const API_URL = "https://script.google.com/macros/s/AKfycbznwTBduitkVB41HjVgZH1f5JKFsPcpwqO9_uoqF-beG8TAvU3ZfzAgdjQUyJtue0CBQQ/exec"; 
     let currentUserPhone = "";
 
     window.onload = function() {
       const loggedName = localStorage.getItem("loggedName");
       currentUserPhone = localStorage.getItem("loggedPhone");
-      
-      // ถ้าไม่ได้ล็อกอิน ให้เด้งกลับไปหน้า index
-      if (!currentUserPhone) {
-        window.location.href = "index.html";
-      } else {
+      if (!currentUserPhone) window.location.href = "index.html";
+      else {
         document.getElementById("displayUser").innerText = loggedName;
-        fetchTrackingData('4_Tracking_Before'); // โหลดข้อมูลอัตโนมัติ
+        fetchTrackingData('4_Tracking_Before');
       }
     };
 
     function switchTab(tabId, sheetName) {
       document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.nav-link').forEach(el => {
-        el.classList.remove('active', 'fw-bold');
-      });
+      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active', 'fw-bold'));
       document.getElementById(tabId).style.display = 'block';
       event.target.classList.add('active', 'fw-bold');
       fetchTrackingData(sheetName);
@@ -140,8 +120,7 @@
       }).then(r => r.json());
 
       form.reset();
-      form.elements['month'].value = m;
-      form.elements['year'].value = y;
+      form.elements['month'].value = m; form.elements['year'].value = y;
 
       if(res.success) {
         for (const [key, value] of Object.entries(res.data)) {
@@ -153,41 +132,29 @@
     async function submitData(event, sheetName) {
       event.preventDefault();
       const form = event.target;
-      const formData = new FormData(form);
       let dataObj = {};
-      formData.forEach((value, key) => dataObj[key] = value);
+      new FormData(form).forEach((value, key) => dataObj[key] = value);
       
       const btn = form.querySelector('button[type="submit"]');
       const originalText = btn.innerText;
-      btn.innerText = "กำลังบันทึก...";
-      btn.disabled = true;
+      btn.innerText = "กำลังบันทึก..."; btn.disabled = true;
 
       try {
         const res = await fetch(API_URL, {
           method: "POST", body: JSON.stringify({ action: "save", sheetName: sheetName, phone: currentUserPhone, data: dataObj })
         }).then(r => r.json());
         alert(res.message);
-      } catch (e) {
-        alert("บันทึกไม่สำเร็จ");
-      }
-      btn.innerText = originalText;
-      btn.disabled = false;
+      } catch (e) { alert("บันทึกไม่สำเร็จ"); }
+      btn.innerText = originalText; btn.disabled = false;
     }
 
-    // ฟังก์ชันคำนวณต้นทุนรวมอัตโนมัติ
-    document.querySelectorAll('.t4-cost').forEach(input => {
-      input.addEventListener('input', () => {
-        let total = 0;
-        document.querySelectorAll('.t4-cost').forEach(inp => total += Number(inp.value) || 0);
-        document.getElementById('t4_total').value = total;
-      });
-    });
-
-    document.querySelectorAll('.t5-cost').forEach(input => {
-      input.addEventListener('input', () => {
-        let total = 0;
-        document.querySelectorAll('.t5-cost').forEach(inp => total += Number(inp.value) || 0);
-        document.getElementById('t5_total').value = total;
+    ['t4', 't5'].forEach(prefix => {
+      document.querySelectorAll(`.${prefix}-cost`).forEach(input => {
+        input.addEventListener('input', () => {
+          let total = 0;
+          document.querySelectorAll(`.${prefix}-cost`).forEach(inp => total += Number(inp.value) || 0);
+          document.getElementById(`${prefix}_total`).value = total;
+        });
       });
     });
   </script>
