@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>จัดการข้อมูลฐาน - โปรไฟล์</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .nav-tabs .nav-link.active { font-weight: bold; color: #28a745; border-bottom: 3px solid #28a745; }
+    .nav-tabs .nav-link { color: #6c757d; }
+  </style>
+</head>
+<body class="bg-light" style="font-family: 'Sarabun', sans-serif;">
+
+  <div class="container mt-4 mb-5" style="max-width: 800px;">
+    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm border-start border-5 border-success">
+      <div>
+        <h6 class="mb-0 text-success fw-bold">ระบบข้อมูลฐาน</h6>
+        <small class="text-muted" id="displayUser"></small>
+      </div>
+      <a href="index.html" class="btn btn-outline-secondary btn-sm">กลับหน้าแรก</a>
+    </div>
+
+    <ul class="nav nav-tabs mb-4 flex-nowrap overflow-auto" style="white-space: nowrap;">
+      <li class="nav-item"><button class="nav-link active" onclick="switchTab('t1', '1_Profile')">1. โปรไฟล์</button></li>
+      <li class="nav-item"><button class="nav-link" onclick="switchTab('t2', '2_Baseline_Resources')">2. ต้นทุนฐาน</button></li>
+      <li class="nav-item"><button class="nav-link" onclick="switchTab('t3', '3_Knowledge_Readiness')">3. การเรียนรู้</button></li>
+    </ul>
+
+    <div id="t1" class="tab-content">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-success text-white fw-bold">1. ข้อมูลทั่วไปครัวเรือน และ ฐานการผลิต</div>
+        <div class="card-body">
+          <form id="form_1_Profile" onsubmit="submitData(event, '1_Profile')">
+            <h6 class="text-success fw-bold border-bottom pb-2">ข้อมูลส่วนตัวและที่อยู่</h6>
+            <div class="mb-3"><label>ชื่อหัวหน้าครัวเรือน</label><input type="text" class="form-control" name="head_name" required></div>
+            <div class="row mb-3">
+              <div class="col-6"><label>สมาชิกทั้งหมด</label><input type="number" class="form-control" name="member_total"></div>
+              <div class="col-6"><label>แรงงานเกษตร</label><input type="number" class="form-control" name="worker_total"></div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-4"><label>บ้านเลขที่</label><input type="text" class="form-control" name="address_no"></div>
+              <div class="col-4"><label>หมู่ที่</label><input type="text" class="form-control" name="moo"></div>
+              <div class="col-4"><label>หมู่บ้าน</label><input type="text" class="form-control" name="village_name"></div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-4"><label>จังหวัด</label><input type="text" class="form-control bg-light" id="province" name="province" value="ศรีสะเกษ" readonly></div>
+              <div class="col-4"><label>อำเภอ</label><select class="form-select" id="district" name="district" onchange="updateSubDistricts()"><option value="">โหลด...</option></select></div>
+              <div class="col-4"><label>ตำบล</label><select class="form-select" id="sub_district" name="sub_district"><option value="">เลือกตำบล</option></select></div>
+            </div>
+
+            <div class="mb-3"><label>พิกัด GPS</label>
+              <div class="input-group">
+                <input type="text" class="form-control bg-light" id="latitude" name="latitude" readonly>
+                <input type="text" class="form-control bg-light" id="longitude" name="longitude" readonly>
+                <button class="btn btn-secondary" type="button" onclick="getLocation()">📌 พิกัด</button>
+              </div>
+            </div>
+            <div class="mb-4"><label>บทบาทในกลุ่ม</label>
+              <select class="form-select" name="group_role"><option value="สมาชิก">สมาชิก</option><option value="แกนนำ">แกนนำ</option><option value="ช่าง/นวัตกร">ช่าง/นวัตกร</option><option value="การตลาด/แปรรูป">การตลาด/แปรรูป</option></select>
+            </div>
+
+            <h6 class="text-success fw-bold border-bottom pb-2 mt-4">ข้อมูลสวนทุเรียน</h6>
+            <div class="row mb-3">
+              <div class="col-6"><label>พื้นที่ปลูก (ไร่)</label><input type="number" step="0.1" class="form-control" name="area_rai"></div>
+              <div class="col-6"><label>อายุสวน (ปี)</label><input type="number" class="form-control" name="orchard_age"></div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><label>จำนวนต้นต่อไร่</label><input type="number" class="form-control" name="trees_per_rai"></div>
+              <div class="col-6"><label>จำนวนต้นรวม</label><input type="number" class="form-control" name="trees_total"></div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><label>พันธุ์ทุเรียน</label><input type="text" class="form-control" name="durian_variety"></div>
+              <div class="col-6"><label>ระบบน้ำ</label><select class="form-select" name="water_system"><option value="สปริงเกลอร์">สปริงเกลอร์</option><option value="น้ำหยด">น้ำหยด</option><option value="อื่นๆ">อื่นๆ</option></select></div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><label>ผลผลิต (ลูก/ต้น)</label><input type="number" class="form-control" name="yield_per_tree"></div>
+              <div class="col-6"><label>น้ำหนัก (กก./ลูก)</label><input type="number" step="0.1" class="form-control" name="yield_weight"></div>
+            </div>
+            <div class="mb-4"><label>รายได้ (บาท/ปี)</label><input type="number" class="form-control text-primary fw-bold" name="total_income"></div>
+            <button type="submit" class="btn btn-success w-100 py-2">💾 บันทึกข้อมูล Profile</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="t2" class="tab-content" style="display: none;">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-success text-white fw-bold">2. โครงสร้างต้นทุนก่อนโครงการ</div>
+        <div class="card-body">
+          <form id="form_2_Baseline_Resources" onsubmit="submitData(event, '2_Baseline_Resources')">
+            <h6 class="text-success fw-bold border-bottom pb-2">โครงสร้างต้นทุน “ก่อนใช้เทคโนโลยี”</h6>
+            <div class="row mb-3">
+              <div class="col-6"><label>ค่าสารเคมีฯ</label><input type="number" class="form-control t2-cost" name="base_cost_pest"></div>
+              <div class="col-6"><label>ค่าปุ๋ยเคมี</label><input type="number" class="form-control t2-cost" name="base_cost_chem_fert"></div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><label>ค่าปุ๋ยน้ำ/สารเสริม</label><input type="number" class="form-control t2-cost" name="base_cost_liq_fert"></div>
+              <div class="col-6"><label>ค่าระบบน้ำ</label><input type="number" class="form-control t2-cost" name="base_cost_water"></div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><label>ค่าพลังงาน</label><input type="number" class="form-control t2-cost" name="base_cost_energy"></div>
+              <div class="col-6"><label>ค่าแรงงาน</label><input type="number" class="form-control t2-cost" name="base_cost_labor"></div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><label>ค่าอื่น ๆ</label><input type="number" class="form-control t2-cost" name="base_cost_other"></div>
+              <div class="col-6"><label>รวมต้นทุน (บาท)</label><input type="number" class="form-control bg-light text-danger fw-bold" name="base_cost_total" id="t2_total" readonly></div>
+            </div>
+            <h6 class="text-success fw-bold border-bottom pb-2 mt-4">ทรัพยากรชีวมวล</h6>
+            <div class="row mb-3">
+              <div class="col-6"><label>กิ่งตัดแต่ง (กก./ปี)</label><input type="number" class="form-control" name="biomass_qty"></div>
+              <div class="col-6"><label>วิธีจัดการเดิม</label><select class="form-select" name="biomass_old_method"><option value="เผาทิ้ง">เผาทิ้ง</option><option value="กองทิ้งในสวน">กองทิ้ง</option><option value="ทำปุ๋ยหมัก">ทำปุ๋ยหมัก</option></select></div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><label>แรงงาน (คน)</label><input type="number" class="form-control" name="labor_ready_ppl"></div>
+              <div class="col-6"><label>เวลาว่าง (ชม./ด)</label><input type="number" class="form-control" name="labor_ready_mth"></div>
+            </div>
+            <div class="mb-4"><label>ความต้องการเตา</label><select class="form-select" name="stove_access"><option value="ส่วนตัว">มีเป็นของตนเอง</option><option value="ส่วนรวม">ใช้ร่วมกับกลุ่ม</option></select></div>
+            <button type="submit" class="btn btn-success w-100 py-2">💾 บันทึกข้อมูลต้นทุน</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="t3" class="tab-content" style="display: none;">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-success text-white fw-bold">3. ความพร้อมด้านการเรียนรู้</div>
+        <div class="card-body">
+          <form id="form_3_Knowledge_Readiness" onsubmit="submitData(event, '3_Knowledge_Readiness')">
+            <div class="row mb-3"><div class="col-6"><label>กิจกรรมกลุ่ม</label><select class="form-select" name="activity_freq"><option value="เป็นประจำ">ประจำ</option><option value="บางครั้ง">บางครั้ง</option></select></div><div class="col-6"><label>จดบันทึก</label><select class="form-select" name="can_record_data"><option value="ทำได้">ทำได้</option><option value="ครอบครัวช่วย">ครอบครัวช่วย</option></select></div></div>
+            <div class="row mb-3"><div class="col-6"><label>สมาร์ตโฟน</label><select class="form-select" name="can_use_smartphone"><option value="คล่องแคล่ว">คล่อง</option><option value="พอใช้ได้">พอใช้ได้</option></select></div><div class="col-6"><label>ถ่ายทอดความรู้</label><select class="form-select" name="transfer_exp"><option value="เคยเป็นวิทยากร">เคยเป็นวิทยากร</option><option value="ไม่เคย">ไม่เคย</option></select></div></div>
+            <div class="mb-4"><label>สนใจกลุ่มนวัตกร</label><select class="form-select" name="innovator_interest"><option value="ช่างเตา">ช่างเตา</option><option value="ผลิตน้ำส้ม/ไบโอชาร์">ผลิตน้ำส้ม/ไบโอชาร์</option></select></div>
+            <h6 class="text-success fw-bold border-bottom pb-2 mt-4">ความรู้เดิม</h6>
+            <div class="row mb-3"><div class="col-6"><label>น้ำส้มควันไม้</label><select class="form-select" name="know_wood_vinegar"><option value="ไม่รู้จัก">ไม่รู้จัก</option><option value="เคยใช้">เคยใช้</option></select></div><div class="col-6"><label>ถ่านไบโอชาร์</label><select class="form-select" name="know_biochar"><option value="ไม่รู้จัก">ไม่รู้จัก</option><option value="เข้าใจและใช้ได้">เข้าใจและใช้ได้</option></select></div></div>
+            <div class="mb-3"><label>แหล่งความรู้</label><input type="text" class="form-control" name="know_source"></div>
+            <div class="row mb-4"><div class="col-6"><label>ความมั่นใจ(น้ำส้ม)</label><select class="form-select" name="conf_wood_vinegar"><option value="มาก">มาก</option><option value="น้อย">น้อย</option></select></div><div class="col-6"><label>ความมั่นใจ(ไบโอชาร์)</label><select class="form-select" name="conf_biochar"><option value="มาก">มาก</option><option value="น้อย">น้อย</option></select></div></div>
+            <button type="submit" class="btn btn-success w-100 py-2">💾 บันทึกข้อมูลการเรียนรู้</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbznwTBduitkVB41HjVgZH1f5JKFsPcpwqO9_uoqF-beG8TAvU3ZfzAgdjQUyJtue0CBQQ/exec"; 
+    let currentUserPhone = "";
+    let masterDataCache = {};
+
+    window.onload = async function() {
+      const role = localStorage.getItem("loggedRole"), loggedPhone = localStorage.getItem("loggedPhone"), targetPhone = localStorage.getItem("targetPhone");
+      if (!loggedPhone) window.location.href = "index.html";
+      else {
+        if ((role === "Admin" || role === "Staff") && targetPhone) {
+          currentUserPhone = targetPhone;
+          document.getElementById("displayUser").innerHTML = `<span class='text-danger'>[โหมด Admin] จัดการเบอร์: ${targetPhone}</span>`;
+        } else {
+          currentUserPhone = loggedPhone;
+          document.getElementById("displayUser").innerText = localStorage.getItem("loggedName");
+        }
+        await loadMasterData();
+        fetchData('1_Profile'); 
+      }
+    };
+
+    async function loadMasterData() {
+      try {
+        const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({action: "get_master_data"}) }).then(r=>r.json());
+        if(res.success) { masterDataCache = res.data; populateDistricts("ศรีสะเกษ"); }
+      } catch(e) { console.log(e); }
+    }
+    
+    function populateDistricts(prov) {
+      const distSelect = document.getElementById("district");
+      distSelect.innerHTML = '<option value="">เลือกอำเภอ</option>';
+      if(masterDataCache[prov]) Object.keys(masterDataCache[prov]).forEach(dist => distSelect.innerHTML += `<option value="${dist}">${dist}</option>`);
+    }
+
+    function updateSubDistricts() {
+      const prov = document.getElementById("province").value, dist = document.getElementById("district").value, subSelect = document.getElementById("sub_district");
+      subSelect.innerHTML = '<option value="">เลือกตำบล</option>';
+      if(masterDataCache[prov] && masterDataCache[prov][dist]) masterDataCache[prov][dist].forEach(sub => subSelect.innerHTML += `<option value="${sub}">${sub}</option>`);
+    }
+
+    function switchTab(tabId, sheetName) {
+      document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).style.display = 'block';
+      event.target.classList.add('active');
+      fetchData(sheetName);
+    }
+
+    async function fetchData(sheetName) {
+      const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "read", sheetName, phone: currentUserPhone }) }).then(r => r.json());
+      const form = document.getElementById(`form_${sheetName}`);
+      if(res.success) {
+        for (const [key, value] of Object.entries(res.data)) if (form.elements[key]) form.elements[key].value = value;
+        if(sheetName === '1_Profile' && res.data.district) {
+          updateSubDistricts();
+          setTimeout(() => { if(form.elements['sub_district']) form.elements['sub_district'].value = res.data.sub_district; }, 100);
+        }
+      } else { form.reset(); if(sheetName === '1_Profile') document.getElementById("province").value = "ศรีสะเกษ"; }
+    }
+
+    async function submitData(event, sheetName) {
+      event.preventDefault();
+      let dataObj = {}; new FormData(event.target).forEach((value, key) => dataObj[key] = value);
+      const btn = event.target.querySelector('button[type="submit"]'), originalText = btn.innerText;
+      btn.innerText = "กำลังบันทึก..."; btn.disabled = true;
+      try {
+        const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "save", sheetName, phone: currentUserPhone, data: dataObj }) }).then(r => r.json());
+        alert(res.message);
+      } catch (e) { alert("บันทึกไม่สำเร็จ"); }
+      btn.innerText = originalText; btn.disabled = false;
+    }
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          document.getElementById("latitude").value = pos.coords.latitude.toFixed(6); document.getElementById("longitude").value = pos.coords.longitude.toFixed(6);
+        }, err => alert("กรุณาอนุญาตให้เข้าถึง GPS"));
+      } else alert("อุปกรณ์ไม่รองรับ GPS");
+    }
+
+    document.querySelectorAll('.t2-cost').forEach(input => {
+      input.addEventListener('input', () => {
+        let total = 0; document.querySelectorAll('.t2-cost').forEach(inp => total += Number(inp.value) || 0);
+        document.getElementById('t2_total').value = total;
+      });
+    });
+  </script>
+</body>
+</html>
