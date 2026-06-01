@@ -209,34 +209,99 @@
       </div>
     </div>
 
+    <!-- ================= TAB 3: Knowledge (ฉบับสมบูรณ์) ================= -->
     <div id="t3" class="tab-content" style="display: none;">
       <div class="card shadow-sm border-0">
-        <div class="card-header">3. ความรู้เรื่องน้ำส้มควันไม้ และ Biochar</div>
+        <div class="card-header">3. ความพร้อมด้านการเรียนรู้และองค์ความรู้</div>
         <div class="card-body">
           <form id="form_3_Knowledge_Readiness" onsubmit="submitData(event, '3_Knowledge_Readiness')">
-            <div class="mb-3"><label>ความสนใจเข้าร่วมกลุ่มนวัตกร</label>
+            
+            <h6 class="text-success fw-bold border-bottom pb-2">ความพร้อมในการเข้าร่วมโครงการ</h6>
+            
+            <div class="row mb-3">
+              <div class="col-6"><label>ความถี่ร่วมกิจกรรมกลุ่ม</label>
+                <select class="form-select" name="activity_freq">
+                  <option value="เป็นประจำ">เป็นประจำ</option>
+                  <option value="บางครั้ง">บางครั้ง</option>
+                  <option value="ไม่ค่อยเข้าร่วม">ไม่ค่อยเข้าร่วม</option>
+                </select>
+              </div>
+              <div class="col-6"><label>การจดบันทึกข้อมูล</label>
+                <select class="form-select" name="can_record_data">
+                  <option value="ทำได้ด้วยตนเอง">ทำได้ด้วยตนเอง</option>
+                  <option value="ให้คนในครอบครัวช่วย">ให้ครอบครัวช่วย</option>
+                  <option value="ทำไม่ได้">ทำไม่ได้</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-6"><label>การใช้สมาร์ตโฟน</label>
+                <select class="form-select" name="can_use_smartphone">
+                  <option value="คล่องแคล่ว">คล่องแคล่ว</option>
+                  <option value="พอใช้ได้">พอใช้ได้</option>
+                  <option value="ให้คนอื่นช่วย">ให้คนอื่นช่วย</option>
+                </select>
+              </div>
+              <div class="col-6"><label>การถ่ายทอดความรู้</label>
+                <select class="form-select" name="transfer_exp">
+                  <option value="เคยเป็นวิทยากร/แกนนำ">เคยเป็นวิทยากร</option>
+                  <option value="เคยแนะนำเพื่อนบ้าน">เคยแนะนำเพื่อนบ้าน</option>
+                  <option value="ไม่เคย">ไม่เคย</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-4"><label>ความสนใจเข้าร่วมกลุ่มนวัตกร</label>
               <select class="form-select" name="innovator_interest">
-                <option value="กลุ่มช่างเตา">กลุ่มช่างเตา</option>
+                <option value="กลุ่มช่างเตา (ผลิตและซ่อมบำรุง)">กลุ่มช่างเตา (ผลิตและซ่อมบำรุง)</option>
                 <option value="กลุ่มผลิต-ใช้น้ำส้มควันไม้และไบโอชาร์">กลุ่มผลิต-ใช้น้ำส้มควันไม้และไบโอชาร์</option>
                 <option value="กลุ่มแปรรูป/การตลาด">กลุ่มแปรรูป/การตลาด</option>
               </select>
             </div>
-            <div class="mb-3"><label>ความรู้เรื่อง น้ำส้มควันไม้</label>
-              <select class="form-select" name="know_wood_vinegar">
-                <option value="ไม่เคยรู้จัก">ไม่เคยรู้จัก / ไม่เคยใช้</option>
-                <option value="เคยได้ยินแต่ไม่เคยใช้">เคยได้ยิน แต่ไม่เคยใช้</option>
-                <option value="เคยใช้ตามคำแนะนำ">เคยใช้ตามคำแนะนำผู้อื่น</option>
-                <option value="ใช้เป็นประจำ">ใช้เป็นประจำและแนะนำผู้อื่นได้</option>
-              </select>
+
+            <h6 class="text-success fw-bold border-bottom pb-2 mt-4">ความรู้เรื่องนวัตกรรม (ก่อนเข้าร่วมโครงการ)</h6>
+            
+            <div class="row mb-3">
+              <div class="col-6"><label>ความรู้: น้ำส้มควันไม้</label>
+                <select class="form-select" name="know_wood_vinegar">
+                  <option value="ไม่เคยรู้จัก">ไม่เคยรู้จัก / ไม่เคยใช้</option>
+                  <option value="เคยได้ยินแต่ไม่เคยใช้">เคยได้ยิน แต่ไม่เคยใช้</option>
+                  <option value="เคยใช้ตามคำแนะนำ">เคยใช้ตามคำแนะนำ</option>
+                  <option value="ใช้เป็นประจำ">ใช้เป็นประจำ</option>
+                </select>
+              </div>
+              <div class="col-6"><label>ความรู้: ถ่านไบโอชาร์</label>
+                <select class="form-select" name="know_biochar">
+                  <option value="ไม่เคยรู้จัก">ไม่เคยรู้จัก / ไม่เคยใช้</option>
+                  <option value="เคยได้ยินแต่ไม่เคยใช้">เคยได้ยิน แต่ไม่เคยใช้</option>
+                  <option value="เข้าใจหลักการและใช้ได้">เข้าใจหลักการและใช้ได้</option>
+                </select>
+              </div>
             </div>
-            <div class="mb-3"><label>ความรู้เรื่อง ถ่านไบโอชาร์</label>
-              <select class="form-select" name="know_biochar">
-                <option value="ไม่เคยรู้จัก">ไม่เคยรู้จัก / ไม่เคยใช้</option>
-                <option value="เคยได้ยินแต่ไม่เคยใช้">เคยได้ยิน แต่ไม่เคยใช้</option>
-                <option value="เข้าใจหลักการ">เข้าใจหลักการและใช้ได้ถูกต้อง</option>
-              </select>
+
+            <div class="mb-3"><label>แหล่งที่มาของความรู้ (ถ้ามี)</label>
+              <input type="text" class="form-control" name="know_source" placeholder="เช่น เจ้าหน้าที่เกษตร, เพื่อนบ้าน, อินเทอร์เน็ต">
             </div>
-            <button type="submit" class="btn btn-success w-100">บันทึกการเรียนรู้</button>
+
+            <div class="row mb-4">
+              <div class="col-6"><label>ความมั่นใจ: น้ำส้มควันไม้</label>
+                <select class="form-select" name="conf_wood_vinegar">
+                  <option value="มาก">มาก</option>
+                  <option value="ปานกลาง">ปานกลาง</option>
+                  <option value="น้อย">น้อย</option>
+                </select>
+              </div>
+              <div class="col-6"><label>ความมั่นใจ: ถ่านไบโอชาร์</label>
+                <select class="form-select" name="conf_biochar">
+                  <option value="มาก">มาก</option>
+                  <option value="ปานกลาง">ปานกลาง</option>
+                  <option value="น้อย">น้อย</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 py-2">💾 บันทึกข้อมูลการเรียนรู้</button>
           </form>
         </div>
       </div>
