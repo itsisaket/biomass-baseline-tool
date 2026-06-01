@@ -15,6 +15,7 @@
       <p class="text-muted">เปลี่ยนขยะชีวมวลให้เป็นมูลค่า ยกระดับรายได้เกษตรกร</p>
     </div>
 
+    <!-- ================= ภาพรวมโครงการ (แสดงให้ทุกคนเห็น) ================= -->
     <h6 class="fw-bold text-secondary mb-3">🌍 ภาพรวมโครงการทั้งหมด (Global)</h6>
     <div class="row mb-4">
       <div class="col-6">
@@ -28,56 +29,50 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <div id="guestSection" class="container" style="max-width: 400px;">
-    <div class="card shadow-sm border-0">
-      <div class="card-body p-4 text-center">
-        <h5 class="mb-3 text-success fw-bold" id="authTitle">เข้าสู่ระบบเพื่อจัดการข้อมูล</h5>
-        <input type="text" id="reg_name" class="form-control mb-3" placeholder="ชื่อ-นามสกุล" style="display:none;">
-        <input type="text" id="username" class="form-control mb-3" placeholder="เบอร์โทรศัพท์ (10 หลัก)" maxlength="10" inputmode="numeric">
-        <input type="password" id="password" class="form-control mb-4" placeholder="รหัสผ่าน">
-        
-        <button id="btnLogin" class="btn btn-success w-100 mb-2" onclick="executeAuth('login')">เข้าสู่ระบบ</button>
-        <button id="btnRegister" class="btn btn-primary w-100 mb-2" onclick="executeAuth('register')" style="display:none;">ยืนยันการสมัคร</button>
-        <a href="#" class="text-decoration-none mt-2 d-block text-secondary" id="switchAuth" onclick="toggleAuthMode()">ยังไม่มีบัญชี? สมัครสมาชิกที่นี่</a>
+    <!-- ================= ปุ่มสำหรับคนที่ยังไม่ Login ================= -->
+    <div id="loginPrompt" class="text-center mt-5 mb-5" style="display: block;">
+      <p class="text-muted mb-2">สำหรับเกษตรกรและทีมงานวิจัย</p>
+      <a href="login.html" class="btn btn-success px-5 py-2 fw-bold shadow-sm">เข้าสู่ระบบ / จัดการข้อมูล</a>
+    </div>
+
+    <!-- ================= แดชบอร์ดและเมนูของคนที่ Login แล้ว ================= -->
+    <div id="userSection" style="display: none;">
+      <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm border-start border-5 border-success">
+        <div>
+          <h6 class="mb-0">ยินดีต้อนรับ: <span id="displayUser" class="text-success fw-bold"></span></h6>
+          <small class="text-muted">สถานะ: <span id="displayRole"></span></small>
+        </div>
+        <button class="btn btn-outline-danger btn-sm" onclick="handleLogout()">ออกจากระบบ</button>
       </div>
-    </div>
-  </div>
 
-  <div id="userSection" class="container" style="max-width: 800px; display: none;">
-    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm border-start border-5 border-success">
-      <div>
-        <h6 class="mb-0">ยินดีต้อนรับ: <span id="displayUser" class="text-success fw-bold"></span></h6>
-        <small class="text-muted">สถานะ: <span id="displayRole"></span></small>
+      <div class="row mb-4 text-center">
+        <div class="col-6"><a href="profile.html" class="btn btn-outline-success w-100 py-3 fw-bold shadow-sm">📝 จัดการข้อมูลฐาน<br><small>(โปรไฟล์ / ต้นทุนเดิม)</small></a></div>
+        <div class="col-6"><a href="tracking.html" class="btn btn-outline-primary w-100 py-3 fw-bold shadow-sm">🗓️ ติดตามรายเดือน<br><small>(บันทึกต้นทุนใหม่)</small></a></div>
       </div>
-      <button class="btn btn-outline-danger btn-sm" onclick="handleLogout()">ออกจากระบบ</button>
-    </div>
 
-    <div class="row mb-4 text-center">
-      <div class="col-6"><a href="profile.html" class="btn btn-outline-success w-100 py-3 fw-bold shadow-sm">📝 จัดการข้อมูลฐาน<br><small>(โปรไฟล์ / ต้นทุนเดิม)</small></a></div>
-      <div class="col-6"><a href="tracking.html" class="btn btn-outline-primary w-100 py-3 fw-bold shadow-sm">🗓️ ติดตามรายเดือน<br><small>(บันทึกต้นทุนใหม่)</small></a></div>
-    </div>
-
-    <h6 class="fw-bold text-secondary mb-3">👤 สรุปผลส่วนบุคคล (เดือนล่าสุด)</h6>
-    <div class="row mb-4">
-      <div class="col-6"><div class="card shadow-sm border-0 border-start border-4 border-warning p-3"><small class="text-muted">มูลค่าน้ำส้มควันไม้ที่ได้</small><h4 class="mb-0 text-warning fw-bold"><span id="p_wood">0</span> ฿</h4></div></div>
-      <div class="col-6"><div class="card shadow-sm border-0 border-start border-4 border-dark p-3"><small class="text-muted">มูลค่าถ่านไบโอชาร์ที่ได้</small><h4 class="mb-0 text-dark fw-bold"><span id="p_biochar">0</span> ฿</h4></div></div>
-    </div>
-    <div class="card shadow-sm border-0 mb-4">
-      <div class="card-body">
-        <h6 class="text-center fw-bold mb-3">เปรียบเทียบต้นทุนรวมต่อเดือน (ก่อน vs หลังใช้เตา)</h6>
-        <canvas id="costChart" height="150"></canvas>
+      <!-- แดชบอร์ดส่วนบุคคล -->
+      <h6 class="fw-bold text-secondary mb-3">👤 สรุปผลส่วนบุคคล (เดือนล่าสุด)</h6>
+      <div class="row mb-4">
+        <div class="col-6"><div class="card shadow-sm border-0 border-start border-4 border-warning p-3"><small class="text-muted">มูลค่าน้ำส้มควันไม้ที่ได้</small><h4 class="mb-0 text-warning fw-bold"><span id="p_wood">0</span> ฿</h4></div></div>
+        <div class="col-6"><div class="card shadow-sm border-0 border-start border-4 border-dark p-3"><small class="text-muted">มูลค่าถ่านไบโอชาร์ที่ได้</small><h4 class="mb-0 text-dark fw-bold"><span id="p_biochar">0</span> ฿</h4></div></div>
       </div>
-    </div>
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+          <h6 class="text-center fw-bold mb-3">เปรียบเทียบต้นทุนรวมต่อเดือน (ก่อน vs หลังใช้เตา)</h6>
+          <canvas id="costChart" height="150"></canvas>
+        </div>
+      </div>
 
-    <div id="adminMenu" class="card shadow-sm border-0 bg-warning bg-opacity-10 mt-4 mb-5" style="display: none;">
-      <div class="card-body">
-        <h6 class="text-danger fw-bold mb-3">⚙️ เมนูผู้ดูแลระบบ (Admin)</h6>
-        <p class="text-muted small">ค้นหาเบอร์โทรศัพท์ของเกษตรกรเพื่อเข้าไปแก้ไขข้อมูล</p>
-        <div class="input-group">
-          <input type="text" id="adminSearchPhone" class="form-control" placeholder="เบอร์โทรเกษตรกร (10 หลัก)" maxlength="10">
-          <button class="btn btn-danger" onclick="adminEditData()">ค้นหา & แก้ไข</button>
+      <!-- เมนู Admin -->
+      <div id="adminMenu" class="card shadow-sm border-0 bg-warning bg-opacity-10 mt-4 mb-4" style="display: none;">
+        <div class="card-body">
+          <h6 class="text-danger fw-bold mb-3">⚙️ เมนูผู้ดูแลระบบ (Admin)</h6>
+          <p class="text-muted small">ค้นหาเบอร์โทรศัพท์ของเกษตรกรเพื่อเข้าไปแก้ไขข้อมูล</p>
+          <div class="input-group">
+            <input type="text" id="adminSearchPhone" class="form-control" placeholder="เบอร์โทรเกษตรกร (10 หลัก)" maxlength="10">
+            <button class="btn btn-danger" onclick="adminEditData()">ค้นหา & แก้ไข</button>
+          </div>
         </div>
       </div>
     </div>
@@ -88,56 +83,43 @@
   </div>
 
   <script>
+    // ⚠️ นำ URL API ของคุณมาวางตรงนี้
     const API_URL = "https://script.google.com/macros/s/AKfycbznwTBduitkVB41HjVgZH1f5JKFsPcpwqO9_uoqF-beG8TAvU3ZfzAgdjQUyJtue0CBQQ/exec";
-    let myChart = null, isLoginMode = true;
+    let myChart = null;
 
     window.onload = async function() {
+      // เคลียร์เบอร์ที่แอดมินจำไว้ทุกครั้งที่มาหน้าแรก
       localStorage.removeItem("targetPhone"); 
-      const role = localStorage.getItem("loggedRole"), phone = localStorage.getItem("loggedPhone");
+      
+      const role = localStorage.getItem("loggedRole");
+      const phone = localStorage.getItem("loggedPhone");
+      const name = localStorage.getItem("loggedName");
 
       if (phone) {
-        document.getElementById("guestSection").style.display = "none";
+        // หากล็อกอินแล้ว ให้ซ่อนปุ่ม "เข้าสู่ระบบ" และแสดง Dashboard ส่วนตัว
+        document.getElementById("loginPrompt").style.display = "none";
         document.getElementById("userSection").style.display = "block";
-        document.getElementById("displayUser").innerText = localStorage.getItem("loggedName");
+        
+        document.getElementById("displayUser").innerText = name;
         document.getElementById("displayRole").innerText = role;
 
-        if(role === "Admin" || role === "Staff") document.getElementById("adminMenu").style.display = "block";
+        if(role === "Admin" || role === "Staff") {
+          document.getElementById("adminMenu").style.display = "block";
+        }
         await loadDashboard(phone);
-      } else { await loadDashboard(""); }
+      } else { 
+        // หากยังไม่ล็อกอิน ให้โหลดเฉพาะภาพรวม
+        await loadDashboard(""); 
+      }
     };
-
-    function toggleAuthMode() {
-      isLoginMode = !isLoginMode;
-      document.getElementById('authTitle').innerText = isLoginMode ? "เข้าสู่ระบบเพื่อจัดการข้อมูล" : "สมัครสมาชิกใหม่";
-      document.getElementById('btnLogin').style.display = isLoginMode ? "block" : "none";
-      document.getElementById('btnRegister').style.display = isLoginMode ? "none" : "block";
-      document.getElementById('reg_name').style.display = isLoginMode ? "none" : "block";
-      document.getElementById('switchAuth').innerText = isLoginMode ? "ยังไม่มีบัญชี? สมัครสมาชิกที่นี่" : "มีบัญชีอยู่แล้ว? เข้าสู่ระบบ";
-    }
-
-    async function executeAuth(action) {
-      const user = document.getElementById("username").value, pass = document.getElementById("password").value, name = document.getElementById("reg_name").value;
-      if(!user || !pass) return alert("กรุณากรอกข้อมูลให้ครบ");
-      const btn = document.getElementById(action === 'login' ? 'btnLogin' : 'btnRegister');
-      btn.innerText = "กำลังประมวลผล..."; btn.disabled = true;
-
-      try {
-        const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action, username: user, password: pass, name }) }).then(r => r.json());
-        if(res.success && action === 'login') {
-          localStorage.setItem("loggedName", res.name); localStorage.setItem("loggedPhone", user); localStorage.setItem("loggedRole", res.role);
-          location.reload();
-        } else if (res.success && action === 'register') { alert("สมัครสำเร็จ! กรุณาเข้าสู่ระบบ"); toggleAuthMode(); } 
-        else { alert(res.message); }
-      } catch (e) { alert("เชื่อมต่อขัดข้อง"); }
-      btn.innerText = action === 'login' ? "เข้าสู่ระบบ" : "ยืนยันการสมัคร"; btn.disabled = false;
-    }
 
     async function loadDashboard(phone) {
       try {
-        const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "dashboard", phone }) }).then(r => r.json());
+        const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "dashboard", phone: phone }) }).then(r => r.json());
         if (res.success) {
           document.getElementById("g_farmers").innerText = res.global.totalFarmers;
           document.getElementById("g_area").innerText = res.global.totalArea.toLocaleString();
+          
           if(res.personal) {
             document.getElementById("p_wood").innerText = res.personal.myWoodVinegarVal.toLocaleString();
             document.getElementById("p_biochar").innerText = res.personal.myBiocharVal.toLocaleString();
@@ -159,11 +141,18 @@
 
     function adminEditData() {
       const target = document.getElementById("adminSearchPhone").value;
-      if(target.length >= 9) { localStorage.setItem("targetPhone", target); window.location.href = "profile.html"; } 
-      else { alert("กรุณาใส่เบอร์โทรให้ถูกต้อง"); }
+      if(target.length >= 9) { 
+        localStorage.setItem("targetPhone", target); 
+        window.location.href = "profile.html"; 
+      } else { 
+        alert("กรุณาใส่เบอร์โทรให้ถูกต้อง"); 
+      }
     }
 
-    function handleLogout() { localStorage.clear(); location.reload(); }
+    function handleLogout() { 
+      localStorage.clear(); 
+      location.reload(); 
+    }
   </script>
 </body>
 </html>
