@@ -199,7 +199,7 @@
     let currentUserPhone = "";
     let isLoginMode = true;
 
-    // --- 1. จัดการ UI หน้า Auth ---
+// --- 1. จัดการ UI หน้า Auth (คงเดิม) ---
     function toggleAuthMode() {
       isLoginMode = !isLoginMode;
       document.getElementById('authTitle').innerText = isLoginMode ? "เข้าสู่ระบบ" : "สมัครสมาชิกใหม่";
@@ -208,6 +208,21 @@
       document.getElementById('reg_name').style.display = isLoginMode ? "none" : "block";
       document.getElementById('switchAuth').innerText = isLoginMode ? "ยังไม่มีบัญชี? สมัครสมาชิก" : "มีบัญชีอยู่แล้ว? เข้าสู่ระบบ";
     }
+
+    // --- 1.5 โหลดสถานะเมื่อเปิดหน้าเว็บ (เปลี่ยนเป็น localStorage) ---
+    window.onload = function() {
+      const loggedInUser = localStorage.getItem("loggedName");
+      const loggedInPhone = localStorage.getItem("loggedPhone");
+      
+      // ถ้าพบว่าเคยล็อกอินไว้ ให้พาเข้าหน้าเว็บทันที
+      if (loggedInUser && loggedInPhone) {
+        currentUserPhone = loggedInPhone; // กู้คืนเบอร์โทรศัพท์ที่จำไว้
+        document.getElementById("authSection").style.display = "none";
+        document.getElementById("appSection").style.display = "block";
+        document.getElementById("displayUser").innerText = loggedInUser;
+        fetchData('1_Profile'); // โหลดข้อมูลมาแสดงทันที
+      }
+    };
 
     // --- 2. ฟังก์ชัน Login / Register ---
     async function executeAuth(action) {
@@ -227,10 +242,15 @@
 
         if(res.success && action === 'login') {
           currentUserPhone = user;
+          
+          // บันทึกข้อมูลลง localStorage (จะอยู่ถาวรจนกว่าจะกดออกจากระบบ)
+          localStorage.setItem("loggedName", res.name);
+          localStorage.setItem("loggedPhone", user); // จำเบอร์โทรไว้ด้วย
+          
           document.getElementById("authSection").style.display = "none";
           document.getElementById("appSection").style.display = "block";
           document.getElementById("displayUser").innerText = res.name;
-          fetchData('1_Profile'); // โหลดข้อมูล Tab 1
+          fetchData('1_Profile'); 
         } else if (res.success && action === 'register') {
           alert("สมัครสำเร็จ! กรุณาเข้าสู่ระบบ");
           toggleAuthMode();
@@ -243,6 +263,12 @@
       
       document.getElementById('btnLogin').innerText = "เข้าสู่ระบบ";
       document.getElementById('btnRegister').innerText = "ยืนยันการสมัคร";
+    }
+
+    // --- ฟังก์ชันออกจากระบบ (ใหม่) ---
+    function handleLogout() {
+      localStorage.clear(); // ลบความจำทั้งหมด
+      location.reload();    // รีเฟรชหน้าเพื่อกลับไปหน้าล็อกอิน
     }
 
     // --- 3. สลับ Tab และดึงข้อมูล ---
