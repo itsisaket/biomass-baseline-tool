@@ -146,21 +146,64 @@
       </div>
     </div>
 
-    <div id="t2" class="tab-content" style="display: none;">
+<div id="t2" class="tab-content" style="display: none;">
       <div class="card shadow-sm border-0">
-        <div class="card-header">2. โครงสร้างต้นทุนก่อนโครงการ (บาท/ไร่/เดือน)</div>
+        <div class="card-header">2. โครงสร้างต้นทุนก่อนโครงการ และศักยภาพชีวมวล</div>
         <div class="card-body">
           <form id="form_2_Baseline_Resources" onsubmit="submitData(event, '2_Baseline_Resources')">
+            
+            <h6 class="text-success fw-bold border-bottom pb-2">3. โครงสร้างต้นทุน “ก่อนใช้เทคโนโลยี” (บาท/ไร่/เดือน)</h6>
+            
             <div class="row mb-3">
-              <div class="col-6"><label>ค่าสารเคมีฯ</label><input type="number" class="form-control base-cost" name="base_cost_pest"></div>
-              <div class="col-6"><label>ค่าปุ๋ยเคมี</label><input type="number" class="form-control base-cost" name="base_cost_chem_fert"></div>
+              <div class="col-6"><label>ค่าสารเคมีฯ</label><input type="number" class="form-control t2-cost" name="base_cost_pest"></div>
+              <div class="col-6"><label>ค่าปุ๋ยเคมี</label><input type="number" class="form-control t2-cost" name="base_cost_chem_fert"></div>
             </div>
+            
             <div class="row mb-3">
-              <div class="col-6"><label>ค่าปุ๋ยน้ำ/เสริม</label><input type="number" class="form-control base-cost" name="base_cost_liq_fert"></div>
-              <div class="col-6"><label>ค่าแรงงาน</label><input type="number" class="form-control base-cost" name="base_cost_labor"></div>
+              <div class="col-6"><label>ค่าปุ๋ยน้ำ/สารเสริม</label><input type="number" class="form-control t2-cost" name="base_cost_liq_fert"></div>
+              <div class="col-6"><label>ค่าระบบน้ำ</label><input type="number" class="form-control t2-cost" name="base_cost_water"></div>
             </div>
-            <div class="mb-3"><label>ปริมาณกิ่งตัดแต่งแห้ง (กก./ปี)</label><input type="number" class="form-control" name="biomass_qty"></div>
-            <button type="submit" class="btn btn-success w-100">บันทึกต้นทุนฐาน</button>
+
+            <div class="row mb-3">
+              <div class="col-6"><label>ค่าพลังงาน</label><input type="number" class="form-control t2-cost" name="base_cost_energy"></div>
+              <div class="col-6"><label>ค่าแรงงาน</label><input type="number" class="form-control t2-cost" name="base_cost_labor"></div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-6"><label>ค่าอื่น ๆ</label><input type="number" class="form-control t2-cost" name="base_cost_other"></div>
+              <div class="col-6"><label>รวมต้นทุน (บาท)</label>
+                <input type="number" class="form-control bg-light text-danger fw-bold" name="base_cost_total" id="t2_total" readonly>
+              </div>
+            </div>
+
+            <h6 class="text-success fw-bold border-bottom pb-2 mt-4">4. ทรัพยากรชีวมวลและศักยภาพการผลิต</h6>
+            
+            <div class="row mb-3">
+              <div class="col-6"><label>กิ่งตัดแต่งแห้ง (กก./ปี)</label><input type="number" class="form-control" name="biomass_qty"></div>
+              <div class="col-6"><label>วิธีจัดการเดิม</label>
+                <select class="form-select" name="biomass_old_method">
+                  <option value="เผาทิ้ง">เผาทิ้ง</option>
+                  <option value="กองทิ้งในสวน">กองทิ้งในสวน</option>
+                  <option value="ทำปุ๋ยหมัก">ทำปุ๋ยหมัก</option>
+                  <option value="อื่นๆ">อื่นๆ</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-6"><label>ความพร้อมแรงงาน (คน)</label><input type="number" class="form-control" name="labor_ready_ppl"></div>
+              <div class="col-6"><label>เวลาว่าง (ชม./เดือน)</label><input type="number" class="form-control" name="labor_ready_mth"></div>
+            </div>
+
+            <div class="mb-4">
+              <label>ต้องการเข้าถึงเตาชีวมวลแบบใด</label>
+              <select class="form-select" name="stove_access">
+                <option value="ต้องการมีเป็นของตนเอง">ต้องการมีเป็นของตนเอง</option>
+                <option value="ใช้ร่วมกับกลุ่ม/ส่วนรวม">ใช้ร่วมกับกลุ่ม/ส่วนรวม</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 py-2">💾 บันทึกข้อมูลต้นทุนและชีวมวล</button>
           </form>
         </div>
       </div>
@@ -449,6 +492,17 @@
         alert("เบราว์เซอร์นี้ไม่รองรับการดึงพิกัด GPS");
       }
     }
+
+    // --- ฟังก์ชันคำนวณต้นทุนรวม (Auto Calculate) สำหรับ Tab 2 ---
+    document.querySelectorAll('.t2-cost').forEach(input => {
+      input.addEventListener('input', () => {
+        const inputs = document.querySelectorAll('.t2-cost');
+        let total = 0;
+        inputs.forEach(inp => total += Number(inp.value) || 0);
+        document.getElementById('t2_total').value = total;
+      });
+    });
+    
   </script>
 </body>
 </html>
