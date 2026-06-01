@@ -15,34 +15,20 @@
       <p class="text-muted">เปลี่ยนขยะชีวมวลให้เป็นมูลค่า ยกระดับรายได้เกษตรกร</p>
     </div>
 
-    <!-- ================= ภาพรวมโครงการ (แสดงให้ทุกคนเห็น) ================= -->
     <h6 class="fw-bold text-secondary mb-3">🌍 ภาพรวมโครงการทั้งหมด (Global)</h6>
     <div class="row mb-4">
-      <div class="col-6">
-        <div class="card shadow-sm border-0 bg-primary text-white text-center p-3">
-          <h2 class="mb-0 fw-bold" id="g_farmers">...</h2><small>ครัวเรือนที่เข้าร่วม</small>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="card shadow-sm border-0 bg-success text-white text-center p-3">
-          <h2 class="mb-0 fw-bold" id="g_area">...</h2><small>พื้นที่สวนรวม (ไร่)</small>
-        </div>
-      </div>
+      <div class="col-6"><div class="card shadow-sm border-0 bg-primary text-white text-center p-3"><h2 class="mb-0 fw-bold" id="g_farmers">...</h2><small>ครัวเรือนที่เข้าร่วม</small></div></div>
+      <div class="col-6"><div class="card shadow-sm border-0 bg-success text-white text-center p-3"><h2 class="mb-0 fw-bold" id="g_area">...</h2><small>พื้นที่สวนรวม (ไร่)</small></div></div>
     </div>
 
-    <!-- ================= ปุ่มสำหรับคนที่ยังไม่ Login ================= -->
     <div id="loginPrompt" class="text-center mt-5 mb-5" style="display: block;">
       <p class="text-muted mb-2">สำหรับเกษตรกรและทีมงานวิจัย</p>
       <a href="login.html" class="btn btn-success px-5 py-2 fw-bold shadow-sm">เข้าสู่ระบบ / จัดการข้อมูล</a>
     </div>
 
-    <!-- ================= แดชบอร์ดและเมนูของคนที่ Login แล้ว ================= -->
     <div id="userSection" style="display: none;">
       <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm border-start border-5 border-success">
-        <div>
-          <h6 class="mb-0">ยินดีต้อนรับ: <span id="displayUser" class="text-success fw-bold"></span></h6>
-          <small class="text-muted">สถานะ: <span id="displayRole"></span></small>
-        </div>
+        <div><h6 class="mb-0">ยินดีต้อนรับ: <span id="displayUser" class="text-success fw-bold"></span></h6><small class="text-muted">สถานะ: <span id="displayRole"></span></small></div>
         <button class="btn btn-outline-danger btn-sm" onclick="handleLogout()">ออกจากระบบ</button>
       </div>
 
@@ -51,7 +37,6 @@
         <div class="col-6"><a href="tracking.html" class="btn btn-outline-primary w-100 py-3 fw-bold shadow-sm">🗓️ ติดตามรายเดือน<br><small>(บันทึกต้นทุนใหม่)</small></a></div>
       </div>
 
-      <!-- แดชบอร์ดส่วนบุคคล -->
       <h6 class="fw-bold text-secondary mb-3">👤 สรุปผลส่วนบุคคล (เดือนล่าสุด)</h6>
       <div class="row mb-4">
         <div class="col-6"><div class="card shadow-sm border-0 border-start border-4 border-warning p-3"><small class="text-muted">มูลค่าน้ำส้มควันไม้ที่ได้</small><h4 class="mb-0 text-warning fw-bold"><span id="p_wood">0</span> ฿</h4></div></div>
@@ -64,7 +49,6 @@
         </div>
       </div>
 
-      <!-- เมนู Admin -->
       <div id="adminMenu" class="card shadow-sm border-0 bg-warning bg-opacity-10 mt-4 mb-4" style="display: none;">
         <div class="card-body">
           <h6 class="text-danger fw-bold mb-3">⚙️ เมนูผู้ดูแลระบบ (Admin)</h6>
@@ -78,55 +62,43 @@
     </div>
   </div>
 
-  <div class="text-center mt-5 mb-4 text-muted small">
-    พัฒนาระบบโดย ผศ.ธีรพงศ์ สงผัด และคณะวิจัย<br>มหาวิทยาลัยราชภัฏศรีสะเกษ
-  </div>
-
   <script>
-    // ⚠️ นำ URL API ของคุณมาวางตรงนี้
     const API_URL = "https://script.google.com/macros/s/AKfycbznwTBduitkVB41HjVgZH1f5JKFsPcpwqO9_uoqF-beG8TAvU3ZfzAgdjQUyJtue0CBQQ/exec";
     let myChart = null;
 
     window.onload = async function() {
-      // เคลียร์เบอร์ที่แอดมินจำไว้ทุกครั้งที่มาหน้าแรก
       localStorage.removeItem("targetPhone"); 
-      
-      const role = localStorage.getItem("loggedRole");
-      const phone = localStorage.getItem("loggedPhone");
-      const name = localStorage.getItem("loggedName");
+      const role = localStorage.getItem("loggedRole"), phone = localStorage.getItem("loggedPhone"), name = localStorage.getItem("loggedName");
 
       if (phone) {
-        // หากล็อกอินแล้ว ให้ซ่อนปุ่ม "เข้าสู่ระบบ" และแสดง Dashboard ส่วนตัว
         document.getElementById("loginPrompt").style.display = "none";
         document.getElementById("userSection").style.display = "block";
-        
         document.getElementById("displayUser").innerText = name;
         document.getElementById("displayRole").innerText = role;
 
-        if(role === "Admin" || role === "Staff") {
-          document.getElementById("adminMenu").style.display = "block";
-        }
+        if(role === "Admin" || role === "Staff") document.getElementById("adminMenu").style.display = "block";
         await loadDashboard(phone);
-      } else { 
-        // หากยังไม่ล็อกอิน ให้โหลดเฉพาะภาพรวม
-        await loadDashboard(""); 
-      }
+      } else { await loadDashboard(""); }
     };
 
     async function loadDashboard(phone) {
       try {
-        const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "dashboard", phone: phone }) }).then(r => r.json());
+        const res = await fetch(API_URL, { 
+          method: "POST", 
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: "dashboard", phone: phone }) 
+        }).then(r => r.json());
+
         if (res.success) {
           document.getElementById("g_farmers").innerText = res.global.totalFarmers;
           document.getElementById("g_area").innerText = res.global.totalArea.toLocaleString();
-          
           if(res.personal) {
             document.getElementById("p_wood").innerText = res.personal.myWoodVinegarVal.toLocaleString();
             document.getElementById("p_biochar").innerText = res.personal.myBiocharVal.toLocaleString();
             renderChart(res.personal.myBaselineCost, res.personal.myCurrentCost);
           }
         }
-      } catch (e) { console.error(e); }
+      } catch (e) { console.error("โหลดข้อมูลล้มเหลว:", e); }
     }
 
     function renderChart(baseCost, currCost) {
@@ -141,18 +113,11 @@
 
     function adminEditData() {
       const target = document.getElementById("adminSearchPhone").value;
-      if(target.length >= 9) { 
-        localStorage.setItem("targetPhone", target); 
-        window.location.href = "profile.html"; 
-      } else { 
-        alert("กรุณาใส่เบอร์โทรให้ถูกต้อง"); 
-      }
+      if(target.length >= 9) { localStorage.setItem("targetPhone", target); window.location.href = "profile.html"; } 
+      else { alert("กรุณาใส่เบอร์โทรให้ถูกต้อง"); }
     }
 
-    function handleLogout() { 
-      localStorage.clear(); 
-      location.reload(); 
-    }
+    function handleLogout() { localStorage.clear(); location.reload(); }
   </script>
 </body>
 </html>
