@@ -5,46 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ระบบติดตามรายเดือน</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>.nav-tabs .nav-link.active { color: #0d6efd; border-bottom: 3px solid #0d6efd; }</style>
 </head>
 <body class="bg-light" style="font-family: 'Sarabun', sans-serif;">
 
   <div class="container mt-4 mb-5" style="max-width: 600px;">
-    <div class="d-flex justify-content-between align-items-center mb-3 bg-white p-3 rounded shadow-sm border-start border-5 border-primary">
-      <div><h6 class="mb-0 text-primary fw-bold">ผู้ใช้งาน: <span id="displayUser"></span></h6></div>
-      <a href="index.html" class="btn btn-outline-secondary btn-sm">กลับหน้าหลัก</a>
+    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm border-start border-5 border-primary">
+      <div><h6 class="mb-0 text-primary fw-bold">ระบบบันทึกรายเดือน</h6><small class="text-muted" id="displayUser"></small></div>
+      <a href="index.html" class="btn btn-outline-secondary btn-sm">กลับหน้าแรก</a>
     </div>
 
-    <ul class="nav nav-tabs mb-3">
+    <ul class="nav nav-tabs mb-3 flex-nowrap">
       <li class="nav-item"><button class="nav-link active fw-bold" onclick="switchTab('t4', '4_Tracking_Before')">ก่อนใช้เตา</button></li>
-      <li class="nav-item"><button class="nav-link" onclick="switchTab('t5', '5_Tracking_After')">หลังใช้เตา</button></li>
+      <li class="nav-item"><button class="nav-link fw-bold" onclick="switchTab('t5', '5_Tracking_After')">หลังใช้เตา</button></li>
     </ul>
 
     <div id="t4" class="tab-content">
       <div class="card shadow-sm border-0">
-        <div class="card-header bg-secondary text-white fw-bold">บันทึกต้นทุนรายเดือน (ก่อนใช้เตา)</div>
+        <div class="card-header bg-secondary text-white fw-bold">บันทึกต้นทุน (ก่อนใช้เตา)</div>
         <div class="card-body">
           <form id="form_4_Tracking_Before" onsubmit="submitData(event, '4_Tracking_Before')">
             <div class="row mb-3">
               <div class="col-6"><label>ปี (พ.ศ.)</label><input type="number" class="form-control" name="year" value="2569" required onchange="fetchTrackingData('4_Tracking_Before')"></div>
-              <div class="col-6"><label>เดือน</label>
-                <select class="form-select" name="month" onchange="fetchTrackingData('4_Tracking_Before')">
-                  <option value="ม.ค.">ม.ค.</option><option value="ก.พ.">ก.พ.</option><option value="มี.ค.">มี.ค.</option>
-                  <option value="เม.ย.">เม.ย.</option><option value="พ.ค.">พ.ค.</option><option value="มิ.ย.">มิ.ย.</option>
-                </select>
-              </div>
+              <div class="col-6"><label>เดือน</label><select class="form-select" name="month" onchange="fetchTrackingData('4_Tracking_Before')"><option value="ม.ค.">ม.ค.</option><option value="ก.พ.">ก.พ.</option><option value="มี.ค.">มี.ค.</option><option value="เม.ย.">เม.ย.</option><option value="พ.ค.">พ.ค.</option><option value="มิ.ย.">มิ.ย.</option></select></div>
             </div>
-            <div class="row mb-3">
-              <div class="col-6"><label>ค่าสารเคมี (บาท)</label><input type="number" class="form-control t4-cost" name="track_pest"></div>
-              <div class="col-6"><label>ค่าปุ๋ยเคมี</label><input type="number" class="form-control t4-cost" name="track_chem_fert"></div>
-            </div>
-            <div class="row mb-3">
-              <div class="col-6"><label>ค่าปุ๋ยน้ำ/ฮอร์โมน</label><input type="number" class="form-control t4-cost" name="track_liq_fert"></div>
-              <div class="col-6"><label>ค่าแรงงาน</label><input type="number" class="form-control t4-cost" name="track_labor"></div>
-            </div>
-            <div class="row mb-3">
-              <div class="col-6"><label>ค่าอื่นๆ</label><input type="number" class="form-control t4-cost" name="track_other"></div>
-              <div class="col-6"><label>รวม (บาท)</label><input type="number" class="form-control bg-light text-danger fw-bold" name="track_total" id="t4_total" readonly></div>
-            </div>
+            <div class="row mb-3"><div class="col-6"><label>ค่าสารเคมี</label><input type="number" class="form-control t4-cost" name="track_pest"></div><div class="col-6"><label>ค่าปุ๋ยเคมี</label><input type="number" class="form-control t4-cost" name="track_chem_fert"></div></div>
+            <div class="row mb-3"><div class="col-6"><label>ค่าฮอร์โมน</label><input type="number" class="form-control t4-cost" name="track_liq_fert"></div><div class="col-6"><label>ค่าแรงงาน</label><input type="number" class="form-control t4-cost" name="track_labor"></div></div>
+            <div class="row mb-3"><div class="col-6"><label>ค่าอื่นๆ</label><input type="number" class="form-control t4-cost" name="track_other"></div><div class="col-6"><label>รวม (บาท)</label><input type="number" class="form-control bg-light text-danger fw-bold" name="track_total" id="t4_total" readonly></div></div>
             <button type="submit" class="btn btn-secondary w-100">บันทึกข้อมูลเดือนนี้</button>
           </form>
         </div>
@@ -58,29 +45,15 @@
           <form id="form_5_Tracking_After" onsubmit="submitData(event, '5_Tracking_After')">
              <div class="row mb-3">
               <div class="col-6"><label>ปี (พ.ศ.)</label><input type="number" class="form-control" name="year" value="2569" required onchange="fetchTrackingData('5_Tracking_After')"></div>
-              <div class="col-6"><label>เดือน</label>
-                <select class="form-select" name="month" onchange="fetchTrackingData('5_Tracking_After')">
-                  <option value="ม.ค.">ม.ค.</option><option value="ก.พ.">ก.พ.</option><option value="มี.ค.">มี.ค.</option>
-                  <option value="เม.ย.">เม.ย.</option><option value="พ.ค.">พ.ค.</option><option value="มิ.ย.">มิ.ย.</option>
-                </select>
-              </div>
+              <div class="col-6"><label>เดือน</label><select class="form-select" name="month" onchange="fetchTrackingData('5_Tracking_After')"><option value="ม.ค.">ม.ค.</option><option value="ก.พ.">ก.พ.</option><option value="มี.ค.">มี.ค.</option><option value="เม.ย.">เม.ย.</option><option value="พ.ค.">พ.ค.</option><option value="มิ.ย.">มิ.ย.</option></select></div>
             </div>
             <div class="row mb-3 p-2 bg-light rounded">
-              <div class="col-6"><label class="text-success fw-bold">มูลค่าน้ำส้มควันไม้</label><input type="number" class="form-control border-success" name="track_wood_vinegar"></div>
-              <div class="col-6"><label class="text-success fw-bold">มูลค่าถ่านไบโอชาร์</label><input type="number" class="form-control border-success" name="track_biochar"></div>
+              <div class="col-6"><label class="text-success fw-bold">มูลค่าน้ำส้ม</label><input type="number" class="form-control border-success" name="track_wood_vinegar"></div>
+              <div class="col-6"><label class="text-success fw-bold">มูลค่าไบโอชาร์</label><input type="number" class="form-control border-success" name="track_biochar"></div>
             </div>
-             <div class="row mb-3">
-              <div class="col-6"><label>ค่าสารเคมี (บาท)</label><input type="number" class="form-control t5-cost" name="track_pest"></div>
-              <div class="col-6"><label>ค่าปุ๋ยเคมี</label><input type="number" class="form-control t5-cost" name="track_chem_fert"></div>
-            </div>
-            <div class="row mb-3">
-              <div class="col-6"><label>ค่าปุ๋ยน้ำ/ฮอร์โมน</label><input type="number" class="form-control t5-cost" name="track_liq_fert"></div>
-              <div class="col-6"><label>ค่าแรงงาน</label><input type="number" class="form-control t5-cost" name="track_labor"></div>
-            </div>
-            <div class="row mb-3">
-              <div class="col-6"><label>ค่าอื่นๆ</label><input type="number" class="form-control t5-cost" name="track_other"></div>
-              <div class="col-6"><label>รวม (บาท)</label><input type="number" class="form-control bg-light text-danger fw-bold" name="track_total" id="t5_total" readonly></div>
-            </div>
+             <div class="row mb-3"><div class="col-6"><label>ค่าสารเคมี</label><input type="number" class="form-control t5-cost" name="track_pest"></div><div class="col-6"><label>ค่าปุ๋ยเคมี</label><input type="number" class="form-control t5-cost" name="track_chem_fert"></div></div>
+            <div class="row mb-3"><div class="col-6"><label>ค่าฮอร์โมน</label><input type="number" class="form-control t5-cost" name="track_liq_fert"></div><div class="col-6"><label>ค่าแรงงาน</label><input type="number" class="form-control t5-cost" name="track_labor"></div></div>
+            <div class="row mb-3"><div class="col-6"><label>ค่าอื่นๆ</label><input type="number" class="form-control t5-cost" name="track_other"></div><div class="col-6"><label>รวม (บาท)</label><input type="number" class="form-control bg-light text-danger fw-bold" name="track_total" id="t5_total" readonly></div></div>
             <button type="submit" class="btn btn-primary w-100">บันทึกข้อมูลเดือนนี้</button>
           </form>
         </div>
@@ -93,56 +66,43 @@
     let currentUserPhone = "";
 
     window.onload = function() {
-      const loggedName = localStorage.getItem("loggedName");
-      currentUserPhone = localStorage.getItem("loggedPhone");
-      if (!currentUserPhone) window.location.href = "index.html";
+      const role = localStorage.getItem("loggedRole"), loggedPhone = localStorage.getItem("loggedPhone"), targetPhone = localStorage.getItem("targetPhone");
+      if (!loggedPhone) window.location.href = "index.html";
       else {
-        document.getElementById("displayUser").innerText = loggedName;
+        if ((role === "Admin" || role === "Staff") && targetPhone) {
+          currentUserPhone = targetPhone;
+          document.getElementById("displayUser").innerHTML = `<span class='text-danger'>[โหมด Admin] จัดการเบอร์: ${targetPhone}</span>`;
+        } else {
+          currentUserPhone = loggedPhone;
+          document.getElementById("displayUser").innerText = localStorage.getItem("loggedName");
+        }
         fetchTrackingData('4_Tracking_Before');
       }
     };
 
     function switchTab(tabId, sheetName) {
       document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active', 'fw-bold'));
+      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).style.display = 'block';
-      event.target.classList.add('active', 'fw-bold');
+      event.target.classList.add('active');
       fetchTrackingData(sheetName);
     }
 
     async function fetchTrackingData(sheetName) {
       const form = document.getElementById(`form_${sheetName}`);
-      const m = form.elements['month'].value;
-      const y = form.elements['year'].value;
-
-      const res = await fetch(API_URL, {
-        method: "POST", body: JSON.stringify({ action: "read", sheetName: sheetName, phone: currentUserPhone, month: m, year: y })
-      }).then(r => r.json());
-
-      form.reset();
-      form.elements['month'].value = m; form.elements['year'].value = y;
-
-      if(res.success) {
-        for (const [key, value] of Object.entries(res.data)) {
-          if (form.elements[key]) form.elements[key].value = value;
-        }
-      }
+      const m = form.elements['month'].value, y = form.elements['year'].value;
+      const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "read", sheetName, phone: currentUserPhone, month: m, year: y }) }).then(r => r.json());
+      form.reset(); form.elements['month'].value = m; form.elements['year'].value = y;
+      if(res.success) for (const [key, value] of Object.entries(res.data)) if (form.elements[key]) form.elements[key].value = value;
     }
 
     async function submitData(event, sheetName) {
       event.preventDefault();
-      const form = event.target;
-      let dataObj = {};
-      new FormData(form).forEach((value, key) => dataObj[key] = value);
-      
-      const btn = form.querySelector('button[type="submit"]');
-      const originalText = btn.innerText;
+      let dataObj = {}; new FormData(event.target).forEach((value, key) => dataObj[key] = value);
+      const btn = event.target.querySelector('button[type="submit"]'), originalText = btn.innerText;
       btn.innerText = "กำลังบันทึก..."; btn.disabled = true;
-
       try {
-        const res = await fetch(API_URL, {
-          method: "POST", body: JSON.stringify({ action: "save", sheetName: sheetName, phone: currentUserPhone, data: dataObj })
-        }).then(r => r.json());
+        const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "save", sheetName, phone: currentUserPhone, data: dataObj }) }).then(r => r.json());
         alert(res.message);
       } catch (e) { alert("บันทึกไม่สำเร็จ"); }
       btn.innerText = originalText; btn.disabled = false;
@@ -151,8 +111,7 @@
     ['t4', 't5'].forEach(prefix => {
       document.querySelectorAll(`.${prefix}-cost`).forEach(input => {
         input.addEventListener('input', () => {
-          let total = 0;
-          document.querySelectorAll(`.${prefix}-cost`).forEach(inp => total += Number(inp.value) || 0);
+          let total = 0; document.querySelectorAll(`.${prefix}-cost`).forEach(inp => total += Number(inp.value) || 0);
           document.getElementById(`${prefix}_total`).value = total;
         });
       });
