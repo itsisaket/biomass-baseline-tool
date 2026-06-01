@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เข้าสู่ระบบ - โครงการเตาชีวมวลไร้ควัน</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light" style="font-family: 'Sarabun', sans-serif;">
+
+  <div class="container mt-5" style="max-width: 400px;">
+    
+    <!-- ปุ่มกลับหน้าแรก -->
+    <div class="mb-3">
+      <a href="index.html" class="text-decoration-none text-secondary">← กลับหน้าหลัก</a>
+    </div>
+
+    <div class="text-center mb-4">
+      <h4 class="text-success fw-bold">โครงการวิจัยเตาชีวมวลไร้ควัน</h4>
+    </div>
+
+    <div class="card shadow-sm border-0 border-top border-5 border-success">
+      <div class="card-body p-4 text-center">
+        <h5 class="mb-4" id="authTitle">เข้าสู่ระบบเพื่อจัดการข้อมูล</h5>
+        
+        <input type="text" id="reg_name" class="form-control mb-3" placeholder="ชื่อ-นามสกุล" style="display:none;">
+        <input type="text" id="username" class="form-control mb-3" placeholder="เบอร์โทรศัพท์ (10 หลัก)" maxlength="10" inputmode="numeric">
+        <input type="password" id="password" class="form-control mb-4" placeholder="รหัสผ่าน">
+        
+        <button id="btnLogin" class="btn btn-success w-100 mb-2 py-2" onclick="executeAuth('login')">เข้าสู่ระบบ</button>
+        <button id="btnRegister" class="btn btn-primary w-100 mb-2 py-2" onclick="executeAuth('register')" style="display:none;">ยืนยันการสมัคร</button>
+        
+        <a href="#" class="text-decoration-none mt-3 d-block text-secondary" id="switchAuth" onclick="toggleAuthMode()">ยังไม่มีบัญชี? สมัครสมาชิกที่นี่</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ⚠️ นำ URL API ของคุณมาวางตรงนี้
+    const API_URL = "https://script.google.com/macros/s/AKfycbznwTBduitkVB41HjVgZH1f5JKFsPcpwqO9_uoqF-beG8TAvU3ZfzAgdjQUyJtue0CBQQ/exec";
+    let isLoginMode = true;
+
+    window.onload = function() {
+      // ถ้าพบว่าเคยล็อกอินไว้แล้ว ให้เด้งกลับหน้าแรกทันที
+      if (localStorage.getItem("loggedPhone")) {
+        window.location.href = "index.html";
+      }
+    };
+
+    function toggleAuthMode() {
+      isLoginMode = !isLoginMode;
+      document.getElementById('authTitle').innerText = isLoginMode ? "เข้าสู่ระบบเพื่อจัดการข้อมูล" : "สมัครสมาชิกใหม่";
+      document.getElementById('btnLogin').style.display = isLoginMode ? "block" : "none";
+      document.getElementById('btnRegister').style.display = isLoginMode ? "none" : "block";
+      document.getElementById('reg_name').style.display = isLoginMode ? "none" : "block";
+      document.getElementById('switchAuth').innerText = isLoginMode ? "ยังไม่มีบัญชี? สมัครสมาชิกที่นี่" : "มีบัญชีอยู่แล้ว? เข้าสู่ระบบ";
+    }
+
+    async function executeAuth(action) {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      const name = document.getElementById("reg_name").value;
+      
+      if(!user || !pass) return alert("กรุณากรอกข้อมูลให้ครบ");
+      const btn = document.getElementById(action === 'login' ? 'btnLogin' : 'btnRegister');
+      btn.innerText = "กำลังประมวลผล..."; btn.disabled = true;
+
+      try {
+        const res = await fetch(API_URL, { 
+          method: "POST", 
+          body: JSON.stringify({ action: action, username: user, password: pass, name: name }) 
+        }).then(r => r.json());
+
+        if(res.success && action === 'login') {
+          // เก็บข้อมูลลงเครื่อง แล้วกระโดดกลับไปหน้า index.html
+          localStorage.setItem("loggedName", res.name); 
+          localStorage.setItem("loggedPhone", user); 
+          localStorage.setItem("loggedRole", res.role);
+          window.location.href = "index.html"; 
+        } else if (res.success && action === 'register') { 
+          alert("สมัครสำเร็จ! กรุณาเข้าสู่ระบบ"); 
+          toggleAuthMode(); 
+        } else { 
+          alert(res.message); 
+        }
+      } catch (e) { 
+        alert("การเชื่อมต่อขัดข้อง"); 
+      }
+      btn.innerText = action === 'login' ? "เข้าสู่ระบบ" : "ยืนยันการสมัคร"; btn.disabled = false;
+    }
+  </script>
+</body>
+</html>
