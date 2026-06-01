@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบเก็บข้อมูลฐาน เตาชีวมวล</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f4f6f9; font-family: 'Sarabun', sans-serif; }
+    .card-header { background-color: #28a745; color: white; font-weight: bold; }
+    .nav-tabs .nav-link.active { font-weight: bold; color: #28a745; }
+    .nav-tabs .nav-link { color: #6c757d; }
+  </style>
+</head>
+<body>
+
+  <div id="authSection" class="container mt-5" style="max-width: 400px;">
+    <div class="text-center mb-4">
+      <h4 class="text-success fw-bold">โครงการวิจัยเตาชีวมวลไร้ควัน</h4>
+      <p class="text-muted">มหาวิทยาลัยราชภัฏศรีสะเกษ</p>
+    </div>
+    
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4 text-center">
+        <h5 class="mb-4" id="authTitle">เข้าสู่ระบบ</h5>
+        
+        <input type="text" id="reg_name" class="form-control mb-3" placeholder="ชื่อ-นามสกุล" style="display:none;">
+        <input type="text" id="username" class="form-control mb-3" placeholder="เบอร์โทรศัพท์ (Username)">
+        <input type="password" id="password" class="form-control mb-4" placeholder="รหัสผ่าน">
+        
+        <button id="btnLogin" class="btn btn-success w-100 mb-2" onclick="executeAuth('login')">เข้าสู่ระบบ</button>
+        <button id="btnRegister" class="btn btn-primary w-100 mb-2" onclick="executeAuth('register')" style="display:none;">ยืนยันการสมัคร</button>
+        
+        <a href="#" class="text-decoration-none mt-2 d-block" id="switchAuth" onclick="toggleAuthMode()">ยังไม่มีบัญชี? สมัครสมาชิก</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="appSection" class="container mt-4 mb-5" style="display: none; max-width: 800px;">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm border-start border-5 border-success">
+      <div>
+        <h6 class="mb-0">ผู้ใช้งาน: <span id="displayUser" class="text-success fw-bold"></span></h6>
+      </div>
+      <button class="btn btn-outline-danger btn-sm" onclick="location.reload()">ออกจากระบบ</button>
+    </div>
+
+    <ul class="nav nav-tabs mb-4 flex-nowrap overflow-auto" id="myTab" style="white-space: nowrap;">
+      <li class="nav-item"><button class="nav-link active" onclick="switchTab('t1', '1_Profile')">1. โปรไฟล์</button></li>
+      <li class="nav-item"><button class="nav-link" onclick="switchTab('t2', '2_Baseline_Resources')">2. ต้นทุนฐาน</button></li>
+      <li class="nav-item"><button class="nav-link" onclick="switchTab('t3', '3_Knowledge_Readiness')">3. การเรียนรู้</button></li>
+      <li class="nav-item"><button class="nav-link" onclick="switchTab('t4', '4_Tracking_Before')">4. ก่อนใช้เตา</button></li>
+      <li class="nav-item"><button class="nav-link" onclick="switchTab('t5', '5_Tracking_After')">5. หลังใช้เตา</button></li>
+    </ul>
+
+    <div id="t1" class="tab-content">
+      <div class="card shadow-sm border-0">
+        <div class="card-header">1. ข้อมูลทั่วไปครัวเรือน และ ฐานการผลิต</div>
+        <div class="card-body">
+          <form id="form_1_Profile" onsubmit="submitData(event, '1_Profile')">
+            <div class="mb-3"><label>ชื่อหัวหน้าครัวเรือน</label><input type="text" class="form-control" name="head_name" required></div>
+            <div class="row mb-3">
+              <div class="col-6"><label>สมาชิกทั้งหมด (คน)</label><input type="number" class="form-control" name="member_total"></div>
+              <div class="col-6"><label>แรงงานเกษตร (คน)</label><input type="number" class="form-control" name="worker_total"></div>
+            </div>
+            <div class="mb-3"><label>หมู่บ้าน</label><input type="text" class="form-control" name="village_name"></div>
+            <div class="mb-3"><label>บทบาทในกลุ่ม</label>
+              <select class="form-select" name="group_role">
+                <option value="สมาชิก">สมาชิก</option>
+                <option value="แกนนำ">แกนนำ</option>
+                <option value="ช่าง/นวัตกร">ช่าง/นวัตกร</option>
+                <option value="การตลาด/แปรรูป">การตลาด/แปรรูป</option>
+              </select>
+            </div>
+            <hr>
+            <div class="mb-3"><label>พื้นที่ปลูกทุเรียน (ไร่)</label><input type="number" step="0.1" class="form-control" name="area_rai"></div>
+            <button type="submit" class="btn btn-success w-100">บันทึกโปรไฟล์</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="t2" class="tab-content" style="display: none;">
+      <div class="card shadow-sm border-0">
+        <div class="card-header">2. โครงสร้างต้นทุนก่อนโครงการ (บาท/ไร่/เดือน)</div>
+        <div class="card-body">
+          <form id="form_2_Baseline_Resources" onsubmit="submitData(event, '2_Baseline_Resources')">
+            <div class="row mb-3">
+              <div class="col-6"><label>ค่าสารเคมีฯ</label><input type="number" class="form-control base-cost" name="base_cost_pest"></div>
+              <div class="col-6"><label>ค่าปุ๋ยเคมี</label><input type="number" class="form-control base-cost" name="base_cost_chem_fert"></div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><label>ค่าปุ๋ยน้ำ/เสริม</label><input type="number" class="form-control base-cost" name="base_cost_liq_fert"></div>
+              <div class="col-6"><label>ค่าแรงงาน</label><input type="number" class="form-control base-cost" name="base_cost_labor"></div>
+            </div>
+            <div class="mb-3"><label>ปริมาณกิ่งตัดแต่งแห้ง (กก./ปี)</label><input type="number" class="form-control" name="biomass_qty"></div>
+            <button type="submit" class="btn btn-success w-100">บันทึกต้นทุนฐาน</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="t3" class="tab-content" style="display: none;">
+      <div class="card shadow-sm border-0">
+        <div class="card-header">3. ความรู้เรื่องน้ำส้มควันไม้ และ Biochar</div>
+        <div class="card-body">
+          <form id="form_3_Knowledge_Readiness" onsubmit="submitData(event, '3_Knowledge_Readiness')">
+            <div class="mb-3"><label>ความสนใจเข้าร่วมกลุ่มนวัตกร</label>
+              <select class="form-select" name="innovator_interest">
+                <option value="กลุ่มช่างเตา">กลุ่มช่างเตา</option>
+                <option value="กลุ่มผลิต-ใช้น้ำส้มควันไม้และไบโอชาร์">กลุ่มผลิต-ใช้น้ำส้มควันไม้และไบโอชาร์</option>
+                <option value="กลุ่มแปรรูป/การตลาด">กลุ่มแปรรูป/การตลาด</option>
+              </select>
+            </div>
+            <div class="mb-3"><label>ความรู้เรื่อง น้ำส้มควันไม้</label>
+              <select class="form-select" name="know_wood_vinegar">
+                <option value="ไม่เคยรู้จัก">ไม่เคยรู้จัก / ไม่เคยใช้</option>
+                <option value="เคยได้ยินแต่ไม่เคยใช้">เคยได้ยิน แต่ไม่เคยใช้</option>
+                <option value="เคยใช้ตามคำแนะนำ">เคยใช้ตามคำแนะนำผู้อื่น</option>
+                <option value="ใช้เป็นประจำ">ใช้เป็นประจำและแนะนำผู้อื่นได้</option>
+              </select>
+            </div>
+            <div class="mb-3"><label>ความรู้เรื่อง ถ่านไบโอชาร์</label>
+              <select class="form-select" name="know_biochar">
+                <option value="ไม่เคยรู้จัก">ไม่เคยรู้จัก / ไม่เคยใช้</option>
+                <option value="เคยได้ยินแต่ไม่เคยใช้">เคยได้ยิน แต่ไม่เคยใช้</option>
+                <option value="เข้าใจหลักการ">เข้าใจหลักการและใช้ได้ถูกต้อง</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-success w-100">บันทึกการเรียนรู้</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="t4" class="tab-content" style="display: none;">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-secondary">4. ติดตามรายเดือน (ก่อนใช้เตาชีวมวล)</div>
+        <div class="card-body">
+          <form id="form_4_Tracking_Before" onsubmit="submitData(event, '4_Tracking_Before')">
+            <div class="row mb-3">
+              <div class="col-6"><label>ปี</label><input type="number" class="form-control" name="year" value="2568" required></div>
+              <div class="col-6"><label>เดือน</label>
+                <select class="form-select" name="month" onchange="fetchTrackingData('4_Tracking_Before')">
+                  <option value="ม.ค.">ม.ค.</option><option value="ก.พ.">ก.พ.</option><option value="มี.ค.">มี.ค.</option>
+                  <option value="เม.ย.">เม.ย.</option><option value="พ.ค.">พ.ค.</option><option value="มิ.ย.">มิ.ย.</option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><label>ค่าสารเคมี</label><input type="number" class="form-control t4-cost" name="track_pest"></div>
+              <div class="col-6"><label>ค่าปุ๋ยเคมี</label><input type="number" class="form-control t4-cost" name="track_chem_fert"></div>
+            </div>
+            <div class="mb-3"><label>รวมต้นทุน (บาท)</label><input type="number" class="form-control bg-light" name="track_total" id="t4_total" readonly></div>
+            <button type="submit" class="btn btn-secondary w-100">บันทึกข้อมูลเดือนนี้</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="t5" class="tab-content" style="display: none;">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-info text-dark">5. ติดตามรายเดือน (หลังใช้เตาชีวมวล)</div>
+        <div class="card-body">
+          <form id="form_5_Tracking_After" onsubmit="submitData(event, '5_Tracking_After')">
+             <div class="row mb-3">
+              <div class="col-6"><label>ปี</label><input type="number" class="form-control" name="year" value="2569" required></div>
+              <div class="col-6"><label>เดือน</label>
+                <select class="form-select" name="month" onchange="fetchTrackingData('5_Tracking_After')">
+                  <option value="ม.ค.">ม.ค.</option><option value="ก.พ.">ก.พ.</option><option value="มี.ค.">มี.ค.</option>
+                  <option value="เม.ย.">เม.ย.</option><option value="พ.ค.">พ.ค.</option><option value="มิ.ย.">มิ.ย.</option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6"><label class="text-primary fw-bold">มูลค่าน้ำส้มควันไม้</label><input type="number" class="form-control t5-cost border-primary" name="track_wood_vinegar"></div>
+              <div class="col-6"><label class="text-primary fw-bold">มูลค่าถ่านไบโอชาร์</label><input type="number" class="form-control t5-cost border-primary" name="track_biochar"></div>
+            </div>
+             <div class="row mb-3">
+              <div class="col-6"><label>ค่าสารเคมี(ที่ลดลง)</label><input type="number" class="form-control t5-cost" name="track_pest"></div>
+              <div class="col-6"><label>ค่าปุ๋ยเคมี(ที่ลดลง)</label><input type="number" class="form-control t5-cost" name="track_chem_fert"></div>
+            </div>
+            <div class="mb-3"><label>รวมต้นทุน (บาท)</label><input type="number" class="form-control bg-light" name="track_total" id="t5_total" readonly></div>
+            <button type="submit" class="btn btn-info w-100">บันทึกข้อมูลเดือนนี้</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4 text-muted small">
+      พัฒนาระบบโดย ผศ.ธีรพงศ์ สงผัด และคณะวิจัย<br>มหาวิทยาลัยราชภัฏศรีสะเกษ
+    </div>
+
+  </div>
+
+  <script>
+    // ⚠️ นำ URL API จาก Google Apps Script (ลงท้ายด้วย /exec) มาวางตรงนี้
+    const API_URL = "https://script.google.com/macros/s/AKfycbznwTBduitkVB41HjVgZH1f5JKFsPcpwqO9_uoqF-beG8TAvU3ZfzAgdjQUyJtue0CBQQ/exec"; 
+    let currentUserPhone = "";
+    let isLoginMode = true;
+
+    // --- 1. จัดการ UI หน้า Auth ---
+    function toggleAuthMode() {
+      isLoginMode = !isLoginMode;
+      document.getElementById('authTitle').innerText = isLoginMode ? "เข้าสู่ระบบ" : "สมัครสมาชิกใหม่";
+      document.getElementById('btnLogin').style.display = isLoginMode ? "block" : "none";
+      document.getElementById('btnRegister').style.display = isLoginMode ? "none" : "block";
+      document.getElementById('reg_name').style.display = isLoginMode ? "none" : "block";
+      document.getElementById('switchAuth').innerText = isLoginMode ? "ยังไม่มีบัญชี? สมัครสมาชิก" : "มีบัญชีอยู่แล้ว? เข้าสู่ระบบ";
+    }
+
+    // --- 2. ฟังก์ชัน Login / Register ---
+    async function executeAuth(action) {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      const name = document.getElementById("reg_name").value;
+      
+      if(!user || !pass) return alert("กรุณากรอกข้อมูลให้ครบ");
+
+      document.getElementById(action === 'login' ? 'btnLogin' : 'btnRegister').innerText = "กำลังประมวลผล...";
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: action, username: user, password: pass, name: name })
+        }).then(r => r.json());
+
+        if(res.success && action === 'login') {
+          currentUserPhone = user;
+          document.getElementById("authSection").style.display = "none";
+          document.getElementById("appSection").style.display = "block";
+          document.getElementById("displayUser").innerText = res.name;
+          fetchData('1_Profile'); // โหลดข้อมูล Tab 1
+        } else if (res.success && action === 'register') {
+          alert("สมัครสำเร็จ! กรุณาเข้าสู่ระบบ");
+          toggleAuthMode();
+        } else {
+          alert(res.message);
+        }
+      } catch (e) {
+        alert("เกิดข้อผิดพลาดในการเชื่อมต่อ");
+      }
+      
+      document.getElementById('btnLogin').innerText = "เข้าสู่ระบบ";
+      document.getElementById('btnRegister').innerText = "ยืนยันการสมัคร";
+    }
+
+    // --- 3. สลับ Tab และดึงข้อมูล ---
+    function switchTab(tabId, sheetName) {
+      document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+      
+      document.getElementById(tabId).style.display = 'block';
+      event.target.classList.add('active');
+      
+      if(sheetName.includes('Tracking')) {
+        fetchTrackingData(sheetName);
+      } else {
+        fetchData(sheetName);
+      }
+    }
+
+    // ดึงข้อมูลตารางทั่วไป
+    async function fetchData(sheetName) {
+      const res = await fetch(API_URL, {
+        method: "POST", body: JSON.stringify({ action: "read", sheetName: sheetName, phone: currentUserPhone })
+      }).then(r => r.json());
+
+      if(res.success) {
+        const form = document.getElementById(`form_${sheetName}`);
+        for (const [key, value] of Object.entries(res.data)) {
+          if (form.elements[key]) form.elements[key].value = value;
+        }
+      } else {
+        document.getElementById(`form_${sheetName}`).reset(); // เคลียร์ฟอร์มถ้าไม่มีข้อมูล
+      }
+    }
+
+    // ดึงข้อมูลตาราง Tracking (แยกตามเดือนและปี)
+    async function fetchTrackingData(sheetName) {
+      const form = document.getElementById(`form_${sheetName}`);
+      const m = form.elements['month'].value;
+      const y = form.elements['year'].value;
+
+      const res = await fetch(API_URL, {
+        method: "POST", body: JSON.stringify({ action: "read", sheetName: sheetName, phone: currentUserPhone, month: m, year: y })
+      }).then(r => r.json());
+
+      // เก็บค่าเดือนและปีไว้ก่อนเคลียร์ฟอร์ม
+      form.reset();
+      form.elements['month'].value = m;
+      form.elements['year'].value = y;
+
+      if(res.success) {
+        for (const [key, value] of Object.entries(res.data)) {
+          if (form.elements[key]) form.elements[key].value = value;
+        }
+      }
+    }
+
+    // --- 4. บันทึกข้อมูลกลับไปที่ Google Sheets ---
+    async function submitData(event, sheetName) {
+      event.preventDefault();
+      const form = event.target;
+      const formData = new FormData(form);
+      let dataObj = {};
+      
+      formData.forEach((value, key) => dataObj[key] = value);
+      const btn = form.querySelector('button[type="submit"]');
+      const originalText = btn.innerText;
+      btn.innerText = "กำลังบันทึก...";
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST", 
+          body: JSON.stringify({ action: "save", sheetName: sheetName, phone: currentUserPhone, data: dataObj })
+        }).then(r => r.json());
+        alert(res.message);
+      } catch (e) {
+        alert("บันทึกไม่สำเร็จ");
+      }
+      
+      btn.innerText = originalText;
+      btn.disabled = false;
+    }
+
+    // --- 5. ฟังก์ชันคำนวณต้นทุนรวม (Auto Calculate) ---
+    document.querySelectorAll('.t4-cost').forEach(input => {
+      input.addEventListener('input', () => {
+        const inputs = document.querySelectorAll('.t4-cost');
+        let total = 0;
+        inputs.forEach(inp => total += Number(inp.value) || 0);
+        document.getElementById('t4_total').value = total;
+      });
+    });
+
+    document.querySelectorAll('.t5-cost').forEach(input => {
+      input.addEventListener('input', () => {
+        const inputs = document.querySelectorAll('.t5-cost');
+        let total = 0;
+        inputs.forEach(inp => total += Number(inp.value) || 0);
+        document.getElementById('t5_total').value = total;
+      });
+    });
+  </script>
+</body>
+</html>
