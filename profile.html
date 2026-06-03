@@ -19,9 +19,9 @@
     </div>
 
     <ul class="nav nav-tabs mb-4 flex-nowrap overflow-auto fs-5" style="white-space: nowrap;">
-      <li class="nav-item"><button class="nav-link active px-4" onclick="switchTab('t1', '1_Profile')">1. โปรไฟล์</button></li>
-      <li class="nav-item"><button class="nav-link px-4" onclick="switchTab('t2', '2_Baseline_Resources')">2. ต้นทุนฐาน</button></li>
-      <li class="nav-item"><button class="nav-link px-4" onclick="switchTab('t3', '3_Knowledge_Readiness')">3. การเรียนรู้</button></li>
+      <li class="nav-item"><button class="nav-link active px-4" onclick="switchTab('t1', '1_Profile')">โปรไฟล์</button></li>
+      <li class="nav-item"><button class="nav-link px-4" onclick="switchTab('t2', '2_Baseline_Resources')">ต้นทุนฐาน</button></li>
+      <li class="nav-item"><button class="nav-link px-4" onclick="switchTab('t3', '3_Knowledge_Readiness')">การเรียนรู้</button></li>
     </ul>
 
     <div id="t1" class="tab-content">
@@ -29,9 +29,9 @@
         <div class="card-body p-4 p-lg-5">
           <form id="form_1_Profile" onsubmit="submitData(event, '1_Profile')">
             <h5 class="text-success fw-bold border-bottom pb-3 mb-4">ข้อมูลส่วนตัวและที่อยู่</h5>
-            <div class="mb-4"><label class="form-label text-muted">ชื่อหัวหน้าครัวเรือน</label><input type="text" class="form-control form-control-lg" name="head_name" required></div>
+            <div class="mb-4"><label class="form-label text-muted">ชื่อ-สกุล</label><input type="text" class="form-control form-control-lg" name="head_name" required></div>
             <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">สมาชิกทั้งหมด</label><input type="number" class="form-control form-control-lg" name="member_total"></div><div class="col-12 col-md-6"><label class="form-label text-muted">แรงงานเกษตร</label><input type="number" class="form-control form-control-lg" name="worker_total"></div></div>
-            <div class="row mb-4"><div class="col-12 col-md-4 mb-3 mb-md-0"><label class="form-label text-muted">บ้านเลขที่</label><input type="text" class="form-control form-control-lg" name="address_no"></div><div class="col-12 col-md-4 mb-3 mb-md-0"><label class="form-label text-muted">หมู่ที่</label><input type="text" class="form-control form-control-lg" name="moo"></div><div class="col-12 col-md-4"><label class="form-label text-muted">หมู่บ้าน</label><input type="text" class="form-control form-control-lg" name="village_name"></div></div>
+            <div class="row mb-4"><div class="col-12 col-md-4 mb-3 mb-md-0"><label class="form-label text-muted">บ้านเลขที่</label><input type="text" class="form-control form-control-lg" name="address_no"></div><div class="col-12 col-md-4 mb-3 mb-md-0"><label class="form-label text-muted">หมู่ที่</label><input type="text" class="form-control form-control-lg" name="moo"></div><div class="col-12 col-md-4"><label class="form-label text-muted">ชื่อสวน</label><input type="text" class="form-control form-control-lg" name="village_name"></div></div>
             
             <div class="row mb-4">
               <div class="col-12 col-md-4 mb-3 mb-md-0"><label class="form-label text-muted">จังหวัด</label><input type="text" class="form-control form-control-lg bg-light" id="province" name="province" value="ศรีสะเกษ" readonly></div>
