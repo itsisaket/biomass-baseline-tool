@@ -32,14 +32,41 @@
             <div class="mb-4"><label class="form-label text-muted">ชื่อหัวหน้าครัวเรือน</label><input type="text" class="form-control form-control-lg" name="head_name" required></div>
             <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">สมาชิกทั้งหมด</label><input type="number" class="form-control form-control-lg" name="member_total"></div><div class="col-12 col-md-6"><label class="form-label text-muted">แรงงานเกษตร</label><input type="number" class="form-control form-control-lg" name="worker_total"></div></div>
             <div class="row mb-4"><div class="col-12 col-md-4 mb-3 mb-md-0"><label class="form-label text-muted">บ้านเลขที่</label><input type="text" class="form-control form-control-lg" name="address_no"></div><div class="col-12 col-md-4 mb-3 mb-md-0"><label class="form-label text-muted">หมู่ที่</label><input type="text" class="form-control form-control-lg" name="moo"></div><div class="col-12 col-md-4"><label class="form-label text-muted">หมู่บ้าน</label><input type="text" class="form-control form-control-lg" name="village_name"></div></div>
-            <div class="row mb-4"><div class="col-12 col-md-4 mb-3 mb-md-0"><label class="form-label text-muted">จังหวัด</label><input type="text" class="form-control form-control-lg bg-light" id="province" name="province" value="ศรีสะเกษ" readonly></div><div class="col-12 col-md-4 mb-3 mb-md-0"><label class="form-label text-muted">อำเภอ</label><select class="form-select form-select-lg" id="district" name="district" onchange="updateSubDistricts()"><option value="">โหลด...</option></select></div><div class="col-12 col-md-4"><label class="form-label text-muted">ตำบล</label><select class="form-select form-select-lg" id="sub_district" name="sub_district"><option value="">เลือกตำบล</option></select></div></div>
+            
+            <div class="row mb-4">
+              <div class="col-12 col-md-4 mb-3 mb-md-0"><label class="form-label text-muted">จังหวัด</label><input type="text" class="form-control form-control-lg bg-light" id="province" name="province" value="ศรีสะเกษ" readonly></div>
+              <div class="col-12 col-md-4 mb-3 mb-md-0"><label class="form-label text-muted">อำเภอ</label><select class="form-select form-select-lg" id="district" name="district" onchange="updateSubDistricts()"><option value="">โหลด...</option></select></div>
+              <div class="col-12 col-md-4"><label class="form-label text-muted">ตำบล</label><select class="form-select form-select-lg" id="sub_district" name="sub_district"><option value="">เลือกตำบล</option></select></div>
+            </div>
+            
             <div class="mb-4"><label class="form-label text-muted">พิกัด GPS</label><div class="input-group input-group-lg"><input type="text" class="form-control bg-light" id="latitude" name="latitude" readonly><input type="text" class="form-control bg-light" id="longitude" name="longitude" readonly><button class="btn btn-secondary px-4" type="button" onclick="getLocation()">📌 ดึงพิกัด</button></div></div>
-            <div class="mb-5"><label class="form-label text-muted">บทบาทในกลุ่ม</label><select class="form-select form-select-lg" name="group_role"><option value="สมาชิก">สมาชิก</option><option value="แกนนำ">แกนนำ</option><option value="ช่าง/นวัตกร">ช่าง/นวัตกร</option><option value="การตลาด/แปรรูป">การตลาด/แปรรูป</option></select></div>
+            
+            <div class="mb-5">
+              <label class="form-label text-muted">บทบาทในกลุ่ม</label>
+              <select class="form-select form-select-lg" name="group_role" size="4">
+                <option value="สมาชิก">สมาชิก</option>
+                <option value="แกนนำ">แกนนำ</option>
+                <option value="ช่าง/นวัตกร">ช่าง/นวัตกร</option>
+                <option value="การตลาด/แปรรูป">การตลาด/แปรรูป</option>
+              </select>
+            </div>
             
             <h5 class="text-success fw-bold border-bottom pb-3 mb-4 mt-5">ข้อมูลสวนทุเรียน</h5>
             <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">พื้นที่ปลูก (ไร่)</label><input type="number" step="0.1" class="form-control form-control-lg" name="area_rai"></div><div class="col-12 col-md-6"><label class="form-label text-muted">อายุสวน (ปี)</label><input type="number" class="form-control form-control-lg" name="orchard_age"></div></div>
             <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">จำนวนต้น/ไร่</label><input type="number" class="form-control form-control-lg" name="trees_per_rai"></div><div class="col-12 col-md-6"><label class="form-label text-muted">ต้นรวมทั้งหมด</label><input type="number" class="form-control form-control-lg" name="trees_total"></div></div>
-            <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">พันธุ์ทุเรียน</label><input type="text" class="form-control form-control-lg" name="durian_variety"></div><div class="col-12 col-md-6"><label class="form-label text-muted">ระบบน้ำ</label><select class="form-select form-select-lg" name="water_system"><option value="สปริงเกลอร์">สปริงเกลอร์</option><option value="น้ำหยด">น้ำหยด</option><option value="อื่นๆ">อื่นๆ</option></select></div></div>
+            
+            <div class="row mb-4">
+              <div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">พันธุ์ทุเรียน</label><input type="text" class="form-control form-control-lg" name="durian_variety"></div>
+              <div class="col-12 col-md-6">
+                <label class="form-label text-muted">ระบบน้ำ</label>
+                <select class="form-select form-select-lg" name="water_system" size="3">
+                  <option value="สปริงเกลอร์">สปริงเกลอร์</option>
+                  <option value="น้ำหยด">น้ำหยด</option>
+                  <option value="อื่นๆ">อื่นๆ</option>
+                </select>
+              </div>
+            </div>
+            
             <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ผลผลิตเฉลี่ย(ลูก/ต้น)</label><input type="number" class="form-control form-control-lg" name="yield_per_tree"></div><div class="col-12 col-md-6"><label class="form-label text-muted">น้ำหนักเฉลี่ย(กก/ลูก)</label><input type="number" step="0.1" class="form-control form-control-lg" name="yield_weight"></div></div>
             <div class="mb-5"><label class="form-label text-muted">รายได้จากการขาย (บาท/ปี)</label><input type="number" class="form-control form-control-lg text-primary fw-bold fs-4" name="total_income"></div>
             
@@ -60,9 +87,27 @@
             <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ค่าอื่น ๆ</label><input type="number" class="form-control form-control-lg t2-cost" name="base_cost_other"></div><div class="col-12 col-md-6"><label class="form-label text-muted">รวมต้นทุนฐาน (บาท)</label><input type="number" class="form-control form-control-lg bg-light text-danger fw-bold fs-4" name="base_cost_total" id="t2_total" readonly></div></div>
             
             <h5 class="text-success fw-bold border-bottom pb-3 mb-4 mt-5">ทรัพยากรชีวมวลและความต้องการ</h5>
-            <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">กิ่งแห้งที่ได้ (กก/ปี)</label><input type="number" class="form-control form-control-lg" name="biomass_qty"></div><div class="col-12 col-md-6"><label class="form-label text-muted">วิธีจัดการเดิม</label><select class="form-select form-select-lg" name="biomass_old_method"><option value="เผาทิ้ง">เผาทิ้ง</option><option value="กองทิ้ง">กองทิ้ง</option><option value="ทำปุ๋ยหมัก">ทำปุ๋ยหมัก</option></select></div></div>
+            <div class="row mb-4">
+              <div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">กิ่งแห้งที่ได้ (กก/ปี)</label><input type="number" class="form-control form-control-lg" name="biomass_qty"></div>
+              <div class="col-12 col-md-6">
+                <label class="form-label text-muted">วิธีจัดการเดิม</label>
+                <select class="form-select form-select-lg" name="biomass_old_method" size="3">
+                  <option value="เผาทิ้ง">เผาทิ้ง</option>
+                  <option value="กองทิ้ง">กองทิ้ง</option>
+                  <option value="ทำปุ๋ยหมัก">ทำปุ๋ยหมัก</option>
+                </select>
+              </div>
+            </div>
+            
             <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">แรงงานที่พร้อม (คน)</label><input type="number" class="form-control form-control-lg" name="labor_ready_ppl"></div><div class="col-12 col-md-6"><label class="form-label text-muted">เวลาว่าง (ชม/เดือน)</label><input type="number" class="form-control form-control-lg" name="labor_ready_mth"></div></div>
-            <div class="mb-5"><label class="form-label text-muted">ความต้องการเตาชีวมวล</label><select class="form-select form-select-lg" name="stove_access"><option value="ส่วนตัว">มีเป็นของตนเอง</option><option value="ส่วนรวม">ใช้ร่วมกับกลุ่ม</option></select></div>
+            
+            <div class="mb-5">
+              <label class="form-label text-muted">ความต้องการเตาชีวมวล</label>
+              <select class="form-select form-select-lg" name="stove_access" size="2">
+                <option value="ส่วนตัว">มีเป็นของตนเอง</option>
+                <option value="ส่วนรวม">ใช้ร่วมกับกลุ่ม</option>
+              </select>
+            </div>
             
             <button type="submit" class="btn btn-success btn-lg w-100 py-3 fw-bold rounded-pill">💾 บันทึกข้อมูลต้นทุนฐาน</button>
           </form>
@@ -75,14 +120,86 @@
         <div class="card-body p-4 p-lg-5">
           <form id="form_3_Knowledge_Readiness" onsubmit="submitData(event, '3_Knowledge_Readiness')">
             <h5 class="text-success fw-bold border-bottom pb-3 mb-4">ความพร้อมพื้นฐานด้านการเรียนรู้</h5>
-            <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">การเข้าร่วมกิจกรรมกลุ่ม</label><select class="form-select form-select-lg" name="activity_freq"><option value="เป็นประจำ">ประจำ</option><option value="บางครั้ง">บางครั้ง</option></select></div><div class="col-12 col-md-6"><label class="form-label text-muted">การจดบันทึกบัญชี</label><select class="form-select form-select-lg" name="can_record_data"><option value="ทำได้">ทำได้ด้วยตนเอง</option><option value="ครอบครัวช่วย">ครอบครัวช่วยทำให้</option></select></div></div>
-            <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">การใช้สมาร์ตโฟน</label><select class="form-select form-select-lg" name="can_use_smartphone"><option value="คล่องแคล่ว">คล่องแคล่ว</option><option value="พอใช้ได้">พอใช้ได้</option></select></div><div class="col-12 col-md-6"><label class="form-label text-muted">ประสบการณ์ถ่ายทอดความรู้</label><select class="form-select form-select-lg" name="transfer_exp"><option value="เคยเป็นวิทยากร">เคยเป็นวิทยากร/แกนนำ</option><option value="ไม่เคย">ไม่เคย</option></select></div></div>
-            <div class="mb-5"><label class="form-label text-muted">ความสนใจเข้าร่วมกลุ่มนวัตกร</label><select class="form-select form-select-lg" name="innovator_interest"><option value="ช่างเตา">กลุ่มช่างเตา</option><option value="ผลิตน้ำส้ม/ไบโอชาร์">กลุ่มผลิตน้ำส้ม/ไบโอชาร์</option></select></div>
+            
+            <div class="row mb-4">
+              <div class="col-12 col-md-6 mb-3 mb-md-0">
+                <label class="form-label text-muted">การเข้าร่วมกิจกรรมกลุ่ม</label>
+                <select class="form-select form-select-lg" name="activity_freq" size="2">
+                  <option value="เป็นประจำ">เป็นประจำ</option>
+                  <option value="บางครั้ง">บางครั้ง</option>
+                </select>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label text-muted">การจดบันทึกบัญชี</label>
+                <select class="form-select form-select-lg" name="can_record_data" size="2">
+                  <option value="ทำได้">ทำได้ด้วยตนเอง</option>
+                  <option value="ครอบครัวช่วย">ครอบครัวช่วยทำให้</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="row mb-4">
+              <div class="col-12 col-md-6 mb-3 mb-md-0">
+                <label class="form-label text-muted">การใช้สมาร์ตโฟน</label>
+                <select class="form-select form-select-lg" name="can_use_smartphone" size="2">
+                  <option value="คล่องแคล่ว">คล่องแคล่ว</option>
+                  <option value="พอใช้ได้">พอใช้ได้</option>
+                </select>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label text-muted">ประสบการณ์ถ่ายทอดความรู้</label>
+                <select class="form-select form-select-lg" name="transfer_exp" size="2">
+                  <option value="เคยเป็นวิทยากร">เคยเป็นวิทยากร/แกนนำ</option>
+                  <option value="ไม่เคย">ไม่เคย</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="mb-5">
+              <label class="form-label text-muted">ความสนใจเข้าร่วมกลุ่มนวัตกร</label>
+              <select class="form-select form-select-lg" name="innovator_interest" size="2">
+                <option value="ช่างเตา">กลุ่มช่างเตา</option>
+                <option value="ผลิตน้ำส้ม/ไบโอชาร์">กลุ่มผลิตน้ำส้ม/ไบโอชาร์</option>
+              </select>
+            </div>
             
             <h5 class="text-success fw-bold border-bottom pb-3 mb-4 mt-5">ความรู้ความเข้าใจเดิม</h5>
-            <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ความรู้เรื่องน้ำส้มควันไม้</label><select class="form-select form-select-lg" name="know_wood_vinegar"><option value="ไม่รู้จัก">ไม่เคยรู้จัก</option><option value="เคยใช้">เคยได้ยิน/เคยใช้</option></select></div><div class="col-12 col-md-6"><label class="form-label text-muted">ความรู้เรื่องถ่านไบโอชาร์</label><select class="form-select form-select-lg" name="know_biochar"><option value="ไม่รู้จัก">ไม่เคยรู้จัก</option><option value="เข้าใจและใช้ได้">เข้าใจและใช้ได้</option></select></div></div>
+            
+            <div class="row mb-4">
+              <div class="col-12 col-md-6 mb-3 mb-md-0">
+                <label class="form-label text-muted">ความรู้เรื่องน้ำส้มควันไม้</label>
+                <select class="form-select form-select-lg" name="know_wood_vinegar" size="2">
+                  <option value="ไม่รู้จัก">ไม่เคยรู้จัก</option>
+                  <option value="เคยใช้">เคยได้ยิน/เคยใช้</option>
+                </select>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label text-muted">ความรู้เรื่องถ่านไบโอชาร์</label>
+                <select class="form-select form-select-lg" name="know_biochar" size="2">
+                  <option value="ไม่รู้จัก">ไม่เคยรู้จัก</option>
+                  <option value="เข้าใจและใช้ได้">เข้าใจและใช้ได้</option>
+                </select>
+              </div>
+            </div>
+            
             <div class="mb-4"><label class="form-label text-muted">แหล่งที่มาของความรู้ (ถ้ามี)</label><input type="text" class="form-control form-control-lg" name="know_source"></div>
-            <div class="row mb-5"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ความมั่นใจต่อประโยชน์ (น้ำส้ม)</label><select class="form-select form-select-lg" name="conf_wood_vinegar"><option value="มาก">มาก</option><option value="น้อย">น้อย</option></select></div><div class="col-12 col-md-6"><label class="form-label text-muted">ความมั่นใจต่อประโยชน์ (ไบโอชาร์)</label><select class="form-select form-select-lg" name="conf_biochar"><option value="มาก">มาก</option><option value="น้อย">น้อย</option></select></div></div>
+            
+            <div class="row mb-5">
+              <div class="col-12 col-md-6 mb-3 mb-md-0">
+                <label class="form-label text-muted">ความมั่นใจต่อประโยชน์ (น้ำส้ม)</label>
+                <select class="form-select form-select-lg" name="conf_wood_vinegar" size="2">
+                  <option value="มาก">มาก</option>
+                  <option value="น้อย">น้อย</option>
+                </select>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label text-muted">ความมั่นใจต่อประโยชน์ (ไบโอชาร์)</label>
+                <select class="form-select form-select-lg" name="conf_biochar" size="2">
+                  <option value="มาก">มาก</option>
+                  <option value="น้อย">น้อย</option>
+                </select>
+              </div>
+            </div>
             
             <button type="submit" class="btn btn-success btn-lg w-100 py-3 fw-bold rounded-pill">💾 บันทึกข้อมูลการเรียนรู้</button>
           </form>
@@ -92,7 +209,7 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzZVOZtGsfF3TOWUM7XvRzfdQDEzj8NphrmqKL1LjxMgO1zNaw64Uwc3ZiXKO301gt5dQ/exec"; // URL เดิมของคุณ
+    const API_URL = "https://script.google.com/macros/s/AKfycbzZVOZtGsfF3TOWUM7XvRzfdQDEzj8NphrmqKL1LjxMgO1zNaw64Uwc3ZiXKO301gt5dQ/exec"; 
     let currentUserPhone = "", masterDataCache = {};
 
     window.onload = async function() {
@@ -113,9 +230,11 @@
 
     async function loadMasterData() {
       try {
-        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({action: "get_master_data"}) }).then(r=>r.json());
+        const res = await fetch(API_URL, { 
+          method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({action: "get_master_data"}) 
+        }).then(r=>r.json());
         if(res.success) { masterDataCache = res.data; populateDistricts("ศรีสะเกษ"); }
-      } catch(e) { console.log(e); }
+      } catch(e) { console.log("โหลด Master Data ไม่สำเร็จ"); }
     }
     
     function populateDistricts(prov) {
@@ -137,7 +256,10 @@
     }
 
     async function fetchData(sheetName) {
-      const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "read", sheetName, phone: currentUserPhone }) }).then(r => r.json());
+      const res = await fetch(API_URL, { 
+        method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "read", sheetName, phone: currentUserPhone }) 
+      }).then(r => r.json());
       const form = document.getElementById(`form_${sheetName}`);
       if(res.success) {
         for (const [key, value] of Object.entries(res.data)) if (form.elements[key]) form.elements[key].value = value;
@@ -154,9 +276,11 @@
       const btn = event.target.querySelector('button[type="submit"]'), originalText = btn.innerText;
       btn.innerText = "กำลังบันทึก..."; btn.disabled = true;
       try {
-        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "save", sheetName, phone: currentUserPhone, data: dataObj }) }).then(r => r.json());
+        const res = await fetch(API_URL, { 
+          method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: "save", sheetName, phone: currentUserPhone, data: dataObj }) 
+        }).then(r => r.json());
         alert(res.message);
-        // อัปเดตชื่อให้ตรงกัน ถ้ามีการแก้ในหน้า Profile
         if(res.newName && !localStorage.getItem("targetPhone")) {
           localStorage.setItem("loggedName", res.newName);
           document.getElementById("displayUser").innerText = res.newName;
