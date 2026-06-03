@@ -21,9 +21,29 @@
       <div class="card-body p-4 p-lg-5">
         <form id="form_5_Tracking_After" onsubmit="submitData(event, '5_Tracking_After')">
            <h5 class="text-primary fw-bold border-bottom pb-3 mb-4">ข้อมูลรอบเดือนที่ต้องการบันทึก</h5>
+           
            <div class="row mb-5">
-            <div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ปี (พ.ศ.)</label><input type="number" class="form-control form-control-lg" name="year" value="2569" required onchange="fetchTrackingData()"></div>
-            <div class="col-12 col-md-6"><label class="form-label text-muted">เดือน</label><select class="form-select form-select-lg" name="month" onchange="fetchTrackingData()"><option value="ม.ค.">ม.ค.</option><option value="ก.พ.">ก.พ.</option><option value="มี.ค.">มี.ค.</option><option value="เม.ย.">เม.ย.</option><option value="พ.ค.">พ.ค.</option><option value="มิ.ย.">มิ.ย.</option><option value="ก.ค.">ก.ค.</option><option value="ส.ค.">ส.ค.</option><option value="ก.ย.">ก.ย.</option><option value="ต.ค.">ต.ค.</option><option value="พ.ย.">พ.ย.</option><option value="ธ.ค.">ธ.ค.</option></select></div>
+            <div class="col-12 col-md-6 mb-3 mb-md-0">
+              <label class="form-label text-muted">ปี (พ.ศ.)</label>
+              <input type="number" class="form-control form-control-lg" name="year" value="2569" required onchange="fetchTrackingData()">
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label text-muted">เดือน</label>
+              <select class="form-select form-select-lg" name="month" size="6" onchange="fetchTrackingData()">
+                <option value="ม.ค.">ม.ค.</option>
+                <option value="ก.พ.">ก.พ.</option>
+                <option value="มี.ค.">มี.ค.</option>
+                <option value="เม.ย.">เม.ย.</option>
+                <option value="พ.ค.">พ.ค.</option>
+                <option value="มิ.ย.">มิ.ย.</option>
+                <option value="ก.ค.">ก.ค.</option>
+                <option value="ส.ค.">ส.ค.</option>
+                <option value="ก.ย.">ก.ย.</option>
+                <option value="ต.ค.">ต.ค.</option>
+                <option value="พ.ย.">พ.ย.</option>
+                <option value="ธ.ค.">ธ.ค.</option>
+              </select>
+            </div>
           </div>
           
           <h5 class="text-success fw-bold border-bottom pb-3 mb-4">ผลผลิตนวัตกรรมที่ได้</h5>
