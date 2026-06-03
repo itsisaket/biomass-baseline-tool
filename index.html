@@ -6,6 +6,8 @@
   <title>ระบบฐานข้อมูลเตาชีวมวลไร้ควัน</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body class="bg-light" style="font-family: 'Sarabun', sans-serif;">
 
@@ -15,36 +17,52 @@
       <h5 class="text-muted">เปลี่ยนขยะชีวมวลให้เป็นมูลค่า ยกระดับรายได้เกษตรกร</h5>
     </div>
 
-    <h5 class="fw-bold text-secondary mb-3">🌍 ภาพรวมความสำเร็จโครงการทั้งหมด</h5>
+    <h5 class="fw-bold text-secondary mb-3">📌 ภาพรวมความสำเร็จโครงการทั้งหมด</h5>
     <div class="row mb-4">
-      <div class="col-12 col-md-4 mb-3">
-        <div class="card shadow-sm border-0 bg-primary text-white text-center p-4 h-100 rounded-4">
-          <h1 class="mb-0 fw-bold display-4" id="g_farmers">0</h1><h5>ครัวเรือนที่เข้าร่วม</h5>
+      <div class="col-6 col-md-3 mb-3"><div class="card shadow-sm border-0 bg-primary text-white text-center p-3 h-100 rounded-4"><h2 class="mb-0 fw-bold" id="g_farmers">0</h2><small>ครัวเรือนที่เข้าร่วม</small></div></div>
+      <div class="col-6 col-md-3 mb-3"><div class="card shadow-sm border-0 bg-success text-white text-center p-3 h-100 rounded-4"><h2 class="mb-0 fw-bold" id="g_area">0</h2><small>พื้นที่สวนรวม (ไร่)</small></div></div>
+      <div class="col-6 col-md-3 mb-3"><div class="card shadow-sm border-0 bg-info text-white text-center p-3 h-100 rounded-4"><h2 class="mb-0 fw-bold" id="g_trees">0</h2><small>จำนวนต้นรวม</small></div></div>
+      <div class="col-6 col-md-3 mb-3"><div class="card shadow-sm border-0 bg-secondary text-white text-center p-3 h-100 rounded-4"><h2 class="mb-0 fw-bold"><span id="g_biomass">0</span></h2><small>ชีวมวลแห้ง (กก./ปี)</small></div></div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-12 col-lg-8 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+          <div class="card-body p-4">
+            <h5 class="fw-bold text-dark mb-3">📍 พิกัดเครือข่ายนวัตกรเกษตรกร</h5>
+            <div id="map" style="height: 350px; border-radius: 10px; z-index: 1;"></div>
+          </div>
         </div>
       </div>
-      <div class="col-12 col-md-4 mb-3">
-        <div class="card shadow-sm border-0 bg-success text-white text-center p-4 h-100 rounded-4">
-          <h1 class="mb-0 fw-bold display-4" id="g_area">0</h1><h5>พื้นที่สวนรวม (ไร่)</h5>
-        </div>
-      </div>
-      <div class="col-12 col-md-4 mb-3">
-        <div class="card shadow-sm border-0 bg-info text-white text-center p-4 h-100 rounded-4">
-          <h1 class="mb-0 fw-bold display-4" id="g_trees">0</h1><h5>จำนวนต้นรวม</h5>
+      <div class="col-12 col-lg-4 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+          <div class="card-body p-4 text-center">
+            <h5 class="fw-bold text-dark mb-3">👥 บทบาทในกลุ่ม</h5>
+            <div style="height: 300px;"><canvas id="roleChart"></canvas></div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="row mb-5">
-      <div class="col-12 col-md-6 mb-3">
-        <div class="card shadow-sm border-0 border-start border-5 border-warning p-4 h-100 rounded-4">
-          <h5 class="text-muted">มูลค่าน้ำส้มควันไม้สะสมโครงการ</h5>
-          <h1 class="mb-0 text-warning fw-bold display-5"><span id="g_wood">0</span> ฿</h1>
+      <div class="col-12 col-lg-5 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+          <div class="card-body p-4">
+            <h5 class="fw-bold text-dark mb-3">💰 โครงสร้างต้นทุนการเกษตร (ก่อนเริ่มโครงการ)</h5>
+            <div style="height: 300px;"><canvas id="costBreakdownChart"></canvas></div>
+          </div>
         </div>
       </div>
-      <div class="col-12 col-md-6 mb-3">
-        <div class="card shadow-sm border-0 border-start border-5 border-dark p-4 h-100 rounded-4">
-          <h5 class="text-muted">มูลค่าถ่านไบโอชาร์สะสมโครงการ</h5>
-          <h1 class="mb-0 text-dark fw-bold display-5"><span id="g_biochar">0</span> ฿</h1>
+      <div class="col-12 col-lg-7 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+          <div class="card-body p-4">
+            <h5 class="fw-bold text-success mb-3">📈 แนวโน้มมูลค่านวัตกรรม (หลังใช้เตาชีวมวล)</h5>
+            <div class="row mb-3 text-center">
+              <div class="col-6"><h4 class="text-warning fw-bold mb-0"><span id="g_wood">0</span> ฿</h4><small class="text-muted">น้ำส้มควันไม้รวม</small></div>
+              <div class="col-6"><h4 class="text-dark fw-bold mb-0"><span id="g_biochar">0</span> ฿</h4><small class="text-muted">ถ่านไบโอชาร์รวม</small></div>
+            </div>
+            <div style="height: 250px;"><canvas id="trendChart"></canvas></div>
+          </div>
         </div>
       </div>
     </div>
@@ -56,71 +74,50 @@
 
     <div id="userSection" style="display: none;">
       <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 bg-white p-4 rounded-4 shadow-sm border-start border-5 border-success">
-        <div class="mb-2 mb-md-0">
-          <h4 class="mb-0">ยินดีต้อนรับ: <span id="displayUser" class="text-success fw-bold"></span></h4>
-          <span class="text-muted">สถานะ: <span id="displayRole"></span></span>
-        </div>
+        <div class="mb-2 mb-md-0"><h4 class="mb-0">ยินดีต้อนรับ: <span id="displayUser" class="text-success fw-bold"></span></h4><span class="text-muted">สถานะ: <span id="displayRole"></span></span></div>
         <button class="btn btn-outline-danger px-4" onclick="handleLogout()">ออกจากระบบ</button>
       </div>
 
       <div class="row mb-5 text-center">
-        <div class="col-12 col-md-6 mb-3">
-          <a href="profile.html" class="btn btn-outline-success w-100 py-4 fw-bold shadow-sm rounded-4 fs-5">📝 จัดการข้อมูลฐาน<br><small class="fw-normal">(โปรไฟล์ / ต้นทุนเดิม / การเรียนรู้)</small></a>
-        </div>
-        <div class="col-12 col-md-6 mb-3">
-          <a href="tracking.html" class="btn btn-outline-primary w-100 py-4 fw-bold shadow-sm rounded-4 fs-5">🗓️ ติดตามรายเดือน<br><small class="fw-normal">(บันทึกต้นทุน / ผลผลิตใหม่)</small></a>
-        </div>
+        <div class="col-12 col-md-6 mb-3"><a href="profile.html" class="btn btn-outline-success w-100 py-4 fw-bold shadow-sm rounded-4 fs-5">📝 จัดการข้อมูลฐาน<br><small class="fw-normal">(โปรไฟล์ / ต้นทุนเดิม / การเรียนรู้)</small></a></div>
+        <div class="col-12 col-md-6 mb-3"><a href="tracking.html" class="btn btn-outline-primary w-100 py-4 fw-bold shadow-sm rounded-4 fs-5">🗓️ ติดตามรายเดือน<br><small class="fw-normal">(บันทึกต้นทุน / ผลผลิตใหม่)</small></a></div>
       </div>
 
-      <h5 class="fw-bold text-secondary mb-3">👤 สรุปผลส่วนบุคคล (เดือนล่าสุด)</h5>
+      <h5 class="fw-bold text-secondary mb-3">👤 สรุปผลส่วนบุคคลของคุณ (เดือนล่าสุด)</h5>
       <div class="row mb-4">
-        <div class="col-12 col-md-6 mb-3">
-          <div class="card shadow-sm border-0 border-start border-5 border-warning p-4 rounded-4">
-            <h5 class="text-muted">มูลค่าน้ำส้มควันไม้ที่คุณผลิตได้</h5>
-            <h2 class="mb-0 text-warning fw-bold"><span id="p_wood">0</span> ฿</h2>
-          </div>
-        </div>
-        <div class="col-12 col-md-6 mb-3">
-          <div class="card shadow-sm border-0 border-start border-5 border-dark p-4 rounded-4">
-            <h5 class="text-muted">มูลค่าถ่านไบโอชาร์ที่คุณผลิตได้</h5>
-            <h2 class="mb-0 text-dark fw-bold"><span id="p_biochar">0</span> ฿</h2>
-          </div>
-        </div>
+        <div class="col-12 col-md-6 mb-3"><div class="card shadow-sm border-0 border-start border-5 border-warning p-4 rounded-4"><h5 class="text-muted">มูลค่าน้ำส้มควันไม้</h5><h2 class="mb-0 text-warning fw-bold"><span id="p_wood">0</span> ฿</h2></div></div>
+        <div class="col-12 col-md-6 mb-3"><div class="card shadow-sm border-0 border-start border-5 border-dark p-4 rounded-4"><h5 class="text-muted">มูลค่าถ่านไบโอชาร์</h5><h2 class="mb-0 text-dark fw-bold"><span id="p_biochar">0</span> ฿</h2></div></div>
       </div>
-      
       <div class="card shadow-sm border-0 mb-4 rounded-4">
         <div class="card-body p-4">
-          <h5 class="text-center fw-bold mb-4">เปรียบเทียบต้นทุนรวมต่อเดือน (ก่อน vs หลังใช้เตา)</h5>
-          <div style="max-height: 400px; position: relative;">
-            <canvas id="costChart"></canvas>
-          </div>
+          <h5 class="text-center fw-bold mb-4">เปรียบเทียบต้นทุนรวมต่อเดือนของคุณ (ก่อน vs หลังใช้เตา)</h5>
+          <div style="height: 250px;"><canvas id="personalCostChart"></canvas></div>
         </div>
       </div>
 
       <div id="adminMenu" class="card shadow-sm border-0 bg-warning bg-opacity-10 mt-5 mb-4 rounded-4" style="display: none;">
         <div class="card-body p-4">
           <h5 class="text-danger fw-bold mb-3">⚙️ เมนูผู้ดูแลระบบ (Admin)</h5>
-          <p class="text-muted">ค้นหาเบอร์โทรศัพท์ของเกษตรกรเพื่อเข้าไปดูหรือแก้ไขข้อมูล</p>
-          <div class="input-group input-group-lg">
-            <input type="text" id="adminSearchPhone" class="form-control" placeholder="เบอร์โทรเกษตรกร (10 หลัก)" maxlength="10">
-            <button class="btn btn-danger px-4 fw-bold" onclick="adminEditData()">ค้นหา & แก้ไข</button>
-          </div>
+          <p class="text-muted">ค้นหาเบอร์โทรศัพท์ของเกษตรกรเพื่อเข้าไปแก้ไขข้อมูล</p>
+          <div class="input-group input-group-lg"><input type="text" id="adminSearchPhone" class="form-control" placeholder="เบอร์โทรเกษตรกร (10 หลัก)" maxlength="10"><button class="btn btn-danger px-4 fw-bold" onclick="adminEditData()">ค้นหา & แก้ไข</button></div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="text-center mt-5 mb-5 text-muted">
-    <small>พัฒนาระบบโดย ผศ.ธีรพงศ์ สงผัด และคณะวิจัย<br>มหาวิทยาลัยราชภัฏศรีสะเกษ</small>
-  </div>
+  <div class="text-center mt-5 mb-5 text-muted"><small>พัฒนาระบบโดย ผศ.ธีรพงศ์ สงผัด และคณะวิจัย<br>มหาวิทยาลัยราชภัฏศรีสะเกษ</small></div>
 
   <script>
+    // ⚠️ นำ URL API ของคุณมาวางตรงนี้
     const API_URL = "https://script.google.com/macros/s/AKfycbzZVOZtGsfF3TOWUM7XvRzfdQDEzj8NphrmqKL1LjxMgO1zNaw64Uwc3ZiXKO301gt5dQ/exec";
-    let myChart = null;
+    
+    let map, roleChart, costChart, trendChart, personalCostChart;
 
     window.onload = async function() {
       localStorage.removeItem("targetPhone"); 
       const role = localStorage.getItem("loggedRole"), phone = localStorage.getItem("loggedPhone"), name = localStorage.getItem("loggedName");
+
+      initMap(); // เตรียมแผนที่
 
       if (phone) {
         document.getElementById("loginPrompt").style.display = "none";
@@ -133,6 +130,12 @@
       } else { await loadDashboard(""); }
     };
 
+    function initMap() {
+      // ตั้งศูนย์กลางเบื้องต้นที่ จ.ศรีสะเกษ
+      map = L.map('map').setView([15.1186, 104.3220], 9);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+    }
+
     async function loadDashboard(phone) {
       try {
         const res = await fetch(API_URL, { 
@@ -141,27 +144,91 @@
         }).then(r => r.json());
 
         if (res.success) {
+          // 1. อัปเดตตัวเลข KPI
           document.getElementById("g_farmers").innerText = res.global.totalFarmers;
           document.getElementById("g_area").innerText = res.global.totalArea.toLocaleString();
           document.getElementById("g_trees").innerText = res.global.totalTrees.toLocaleString();
+          document.getElementById("g_biomass").innerText = res.global.totalBiomass.toLocaleString();
           document.getElementById("g_wood").innerText = res.global.globalWoodVinegar.toLocaleString();
           document.getElementById("g_biochar").innerText = res.global.globalBiochar.toLocaleString();
           
+          // 2. ปักหมุดแผนที่
+          if(res.global.mapLocations.length > 0) {
+            let bounds = [];
+            res.global.mapLocations.forEach(loc => {
+              L.marker([loc.lat, loc.lng]).addTo(map).bindPopup(`<b>${loc.name}</b><br>บทบาท: ${loc.role}`);
+              bounds.push([loc.lat, loc.lng]);
+            });
+            map.fitBounds(bounds); // ซูมแผนที่ให้ครอบคลุมทุกหมุด
+          }
+
+          // 3. วาดกราฟทั้งหมด
+          drawRoleChart(res.global.rolesCount);
+          drawCostBreakdown(res.global.costStructure);
+          drawTrendChart(res.global.monthlyTrend);
+          
+          // 4. ข้อมูลส่วนบุคคล (ถ้า Login)
           if(res.personal) {
             document.getElementById("p_wood").innerText = res.personal.myWoodVinegarVal.toLocaleString();
             document.getElementById("p_biochar").innerText = res.personal.myBiocharVal.toLocaleString();
-            renderChart(res.personal.myBaselineCost, res.personal.myCurrentCost);
+            drawPersonalCost(res.personal.myBaselineCost, res.personal.myCurrentCost);
           }
         }
       } catch (e) { console.error("โหลดข้อมูลล้มเหลว:", e); }
     }
 
-    function renderChart(baseCost, currCost) {
-      const ctx = document.getElementById('costChart').getContext('2d');
-      if (myChart) myChart.destroy();
-      myChart = new Chart(ctx, {
+    // --- กราฟบทบาทในกลุ่ม (Pie Chart) ---
+    function drawRoleChart(roles) {
+      const ctx = document.getElementById('roleChart').getContext('2d');
+      if(roleChart) roleChart.destroy();
+      roleChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: Object.keys(roles),
+          datasets: [{ data: Object.values(roles), backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545'] }]
+        },
+        options: { maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+      });
+    }
+
+    // --- กราฟโครงสร้างต้นทุน (Bar Chart แนวนอน) ---
+    function drawCostBreakdown(costs) {
+      const ctx = document.getElementById('costBreakdownChart').getContext('2d');
+      if(costChart) costChart.destroy();
+      costChart = new Chart(ctx, {
         type: 'bar',
-        data: { labels: ['ต้นทุนฐานเดิม', 'ต้นทุนเดือนล่าสุด'], datasets: [{ data: [baseCost, currCost], backgroundColor: ['#dc3545', '#28a745'], borderRadius: 8 }] },
+        data: {
+          labels: ['สารเคมี', 'ปุ๋ยเคมี', 'ปุ๋ยน้ำ', 'ระบบน้ำ', 'พลังงาน', 'แรงงาน', 'อื่นๆ'],
+          datasets: [{ label: 'ต้นทุนรวมทั้งโครงการ (บาท)', data: [costs.pest, costs.chem, costs.liq, costs.water, costs.energy, costs.labor, costs.other], backgroundColor: '#dc3545', borderRadius: 4 }]
+        },
+        options: { indexAxis: 'y', maintainAspectRatio: false }
+      });
+    }
+
+    // --- กราฟแนวโน้มรายเดือน (Line Chart) ---
+    function drawTrendChart(trend) {
+      const ctx = document.getElementById('trendChart').getContext('2d');
+      if(trendChart) trendChart.destroy();
+      trendChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: trend.months,
+          datasets: [
+            { label: 'มูลค่าน้ำส้มควันไม้', data: trend.woodVal, borderColor: '#ffc107', backgroundColor: '#ffc107', tension: 0.3 },
+            { label: 'มูลค่าถ่านไบโอชาร์', data: trend.biocharVal, borderColor: '#212529', backgroundColor: '#212529', tension: 0.3 }
+          ]
+        },
+        options: { maintainAspectRatio: false }
+      });
+    }
+
+    // --- กราฟเปรียบเทียบต้นทุนส่วนบุคคล ---
+    function drawPersonalCost(base, curr) {
+      const ctx = document.getElementById('personalCostChart').getContext('2d');
+      if (personalCostChart) personalCostChart.destroy();
+      personalCostChart = new Chart(ctx, {
+        type: 'bar',
+        data: { labels: ['ต้นทุนฐานเดิม', 'ต้นทุนเดือนล่าสุด'], datasets: [{ data: [base, curr], backgroundColor: ['#dc3545', '#28a745'], borderRadius: 8 }] },
         options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
       });
     }
