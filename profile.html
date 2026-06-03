@@ -92,7 +92,7 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzZVOZtGsfF3TOWUM7XvRzfdQDEzj8NphrmqKL1LjxMgO1zNaw64Uwc3ZiXKO301gt5dQ/exec"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbzZVOZtGsfF3TOWUM7XvRzfdQDEzj8NphrmqKL1LjxMgO1zNaw64Uwc3ZiXKO301gt5dQ/exec"; // URL เดิมของคุณ
     let currentUserPhone = "", masterDataCache = {};
 
     window.onload = async function() {
@@ -113,11 +113,9 @@
 
     async function loadMasterData() {
       try {
-        const res = await fetch(API_URL, { 
-          method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({action: "get_master_data"}) 
-        }).then(r=>r.json());
+        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({action: "get_master_data"}) }).then(r=>r.json());
         if(res.success) { masterDataCache = res.data; populateDistricts("ศรีสะเกษ"); }
-      } catch(e) { console.log("โหลด Master Data ไม่สำเร็จ"); }
+      } catch(e) { console.log(e); }
     }
     
     function populateDistricts(prov) {
@@ -139,10 +137,7 @@
     }
 
     async function fetchData(sheetName) {
-      const res = await fetch(API_URL, { 
-        method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ action: "read", sheetName, phone: currentUserPhone }) 
-      }).then(r => r.json());
+      const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "read", sheetName, phone: currentUserPhone }) }).then(r => r.json());
       const form = document.getElementById(`form_${sheetName}`);
       if(res.success) {
         for (const [key, value] of Object.entries(res.data)) if (form.elements[key]) form.elements[key].value = value;
@@ -159,11 +154,13 @@
       const btn = event.target.querySelector('button[type="submit"]'), originalText = btn.innerText;
       btn.innerText = "กำลังบันทึก..."; btn.disabled = true;
       try {
-        const res = await fetch(API_URL, { 
-          method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ action: "save", sheetName, phone: currentUserPhone, data: dataObj }) 
-        }).then(r => r.json());
+        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "save", sheetName, phone: currentUserPhone, data: dataObj }) }).then(r => r.json());
         alert(res.message);
+        // อัปเดตชื่อให้ตรงกัน ถ้ามีการแก้ในหน้า Profile
+        if(res.newName && !localStorage.getItem("targetPhone")) {
+          localStorage.setItem("loggedName", res.newName);
+          document.getElementById("displayUser").innerText = res.newName;
+        }
       } catch (e) { alert("บันทึกไม่สำเร็จ"); }
       btn.innerText = originalText; btn.disabled = false;
     }
