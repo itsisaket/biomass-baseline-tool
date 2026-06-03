@@ -9,57 +9,109 @@
 </head>
 <body class="bg-light" style="font-family: 'Sarabun', sans-serif;">
 
-  <div class="container mt-4 mb-4" style="max-width: 800px;">
-    <div class="text-center mb-4">
-      <h3 class="text-success fw-bold">โครงการวิจัยเตาชีวมวลไร้ควัน</h3>
-      <p class="text-muted">เปลี่ยนขยะชีวมวลให้เป็นมูลค่า ยกระดับรายได้เกษตรกร</p>
+  <div class="container-fluid mt-4 mb-5 px-3 px-lg-5">
+    <div class="text-center mb-5">
+      <h2 class="text-success fw-bold">โครงการวิจัยเตาชีวมวลไร้ควัน</h2>
+      <h5 class="text-muted">เปลี่ยนขยะชีวมวลให้เป็นมูลค่า ยกระดับรายได้เกษตรกร</h5>
     </div>
 
-    <h6 class="fw-bold text-secondary mb-3">🌍 ภาพรวมโครงการทั้งหมด (Global)</h6>
+    <h5 class="fw-bold text-secondary mb-3">🌍 ภาพรวมความสำเร็จโครงการทั้งหมด</h5>
     <div class="row mb-4">
-      <div class="col-6"><div class="card shadow-sm border-0 bg-primary text-white text-center p-3"><h2 class="mb-0 fw-bold" id="g_farmers">...</h2><small>ครัวเรือนที่เข้าร่วม</small></div></div>
-      <div class="col-6"><div class="card shadow-sm border-0 bg-success text-white text-center p-3"><h2 class="mb-0 fw-bold" id="g_area">...</h2><small>พื้นที่สวนรวม (ไร่)</small></div></div>
+      <div class="col-12 col-md-4 mb-3">
+        <div class="card shadow-sm border-0 bg-primary text-white text-center p-4 h-100 rounded-4">
+          <h1 class="mb-0 fw-bold display-4" id="g_farmers">0</h1><h5>ครัวเรือนที่เข้าร่วม</h5>
+        </div>
+      </div>
+      <div class="col-12 col-md-4 mb-3">
+        <div class="card shadow-sm border-0 bg-success text-white text-center p-4 h-100 rounded-4">
+          <h1 class="mb-0 fw-bold display-4" id="g_area">0</h1><h5>พื้นที่สวนรวม (ไร่)</h5>
+        </div>
+      </div>
+      <div class="col-12 col-md-4 mb-3">
+        <div class="card shadow-sm border-0 bg-info text-white text-center p-4 h-100 rounded-4">
+          <h1 class="mb-0 fw-bold display-4" id="g_trees">0</h1><h5>จำนวนต้นรวม</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-12 col-md-6 mb-3">
+        <div class="card shadow-sm border-0 border-start border-5 border-warning p-4 h-100 rounded-4">
+          <h5 class="text-muted">มูลค่าน้ำส้มควันไม้สะสมโครงการ</h5>
+          <h1 class="mb-0 text-warning fw-bold display-5"><span id="g_wood">0</span> ฿</h1>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 mb-3">
+        <div class="card shadow-sm border-0 border-start border-5 border-dark p-4 h-100 rounded-4">
+          <h5 class="text-muted">มูลค่าถ่านไบโอชาร์สะสมโครงการ</h5>
+          <h1 class="mb-0 text-dark fw-bold display-5"><span id="g_biochar">0</span> ฿</h1>
+        </div>
+      </div>
     </div>
 
     <div id="loginPrompt" class="text-center mt-5 mb-5" style="display: block;">
-      <p class="text-muted mb-2">สำหรับเกษตรกรและทีมงานวิจัย</p>
-      <a href="login.html" class="btn btn-success px-5 py-2 fw-bold shadow-sm">เข้าสู่ระบบ / จัดการข้อมูล</a>
+      <h5 class="text-muted mb-3">สำหรับเกษตรกรและทีมงานวิจัย</h5>
+      <a href="login.html" class="btn btn-success btn-lg px-5 py-3 fw-bold shadow-sm rounded-pill">เข้าสู่ระบบ / จัดการข้อมูลส่วนตัว</a>
     </div>
 
     <div id="userSection" style="display: none;">
-      <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm border-start border-5 border-success">
-        <div><h6 class="mb-0">ยินดีต้อนรับ: <span id="displayUser" class="text-success fw-bold"></span></h6><small class="text-muted">สถานะ: <span id="displayRole"></span></small></div>
-        <button class="btn btn-outline-danger btn-sm" onclick="handleLogout()">ออกจากระบบ</button>
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 bg-white p-4 rounded-4 shadow-sm border-start border-5 border-success">
+        <div class="mb-2 mb-md-0">
+          <h4 class="mb-0">ยินดีต้อนรับ: <span id="displayUser" class="text-success fw-bold"></span></h4>
+          <span class="text-muted">สถานะ: <span id="displayRole"></span></span>
+        </div>
+        <button class="btn btn-outline-danger px-4" onclick="handleLogout()">ออกจากระบบ</button>
       </div>
 
-      <div class="row mb-4 text-center">
-        <div class="col-6"><a href="profile.html" class="btn btn-outline-success w-100 py-3 fw-bold shadow-sm">📝 จัดการข้อมูลฐาน<br><small>(โปรไฟล์ / ต้นทุนเดิม)</small></a></div>
-        <div class="col-6"><a href="tracking.html" class="btn btn-outline-primary w-100 py-3 fw-bold shadow-sm">🗓️ ติดตามรายเดือน<br><small>(บันทึกต้นทุนใหม่)</small></a></div>
-      </div>
-
-      <h6 class="fw-bold text-secondary mb-3">👤 สรุปผลส่วนบุคคล (เดือนล่าสุด)</h6>
-      <div class="row mb-4">
-        <div class="col-6"><div class="card shadow-sm border-0 border-start border-4 border-warning p-3"><small class="text-muted">มูลค่าน้ำส้มควันไม้ที่ได้</small><h4 class="mb-0 text-warning fw-bold"><span id="p_wood">0</span> ฿</h4></div></div>
-        <div class="col-6"><div class="card shadow-sm border-0 border-start border-4 border-dark p-3"><small class="text-muted">มูลค่าถ่านไบโอชาร์ที่ได้</small><h4 class="mb-0 text-dark fw-bold"><span id="p_biochar">0</span> ฿</h4></div></div>
-      </div>
-      <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body">
-          <h6 class="text-center fw-bold mb-3">เปรียบเทียบต้นทุนรวมต่อเดือน (ก่อน vs หลังใช้เตา)</h6>
-          <canvas id="costChart" height="150"></canvas>
+      <div class="row mb-5 text-center">
+        <div class="col-12 col-md-6 mb-3">
+          <a href="profile.html" class="btn btn-outline-success w-100 py-4 fw-bold shadow-sm rounded-4 fs-5">📝 จัดการข้อมูลฐาน<br><small class="fw-normal">(โปรไฟล์ / ต้นทุนเดิม / การเรียนรู้)</small></a>
+        </div>
+        <div class="col-12 col-md-6 mb-3">
+          <a href="tracking.html" class="btn btn-outline-primary w-100 py-4 fw-bold shadow-sm rounded-4 fs-5">🗓️ ติดตามรายเดือน<br><small class="fw-normal">(บันทึกต้นทุน / ผลผลิตใหม่)</small></a>
         </div>
       </div>
 
-      <div id="adminMenu" class="card shadow-sm border-0 bg-warning bg-opacity-10 mt-4 mb-4" style="display: none;">
-        <div class="card-body">
-          <h6 class="text-danger fw-bold mb-3">⚙️ เมนูผู้ดูแลระบบ (Admin)</h6>
-          <p class="text-muted small">ค้นหาเบอร์โทรศัพท์ของเกษตรกรเพื่อเข้าไปแก้ไขข้อมูล</p>
-          <div class="input-group">
+      <h5 class="fw-bold text-secondary mb-3">👤 สรุปผลส่วนบุคคล (เดือนล่าสุด)</h5>
+      <div class="row mb-4">
+        <div class="col-12 col-md-6 mb-3">
+          <div class="card shadow-sm border-0 border-start border-5 border-warning p-4 rounded-4">
+            <h5 class="text-muted">มูลค่าน้ำส้มควันไม้ที่คุณผลิตได้</h5>
+            <h2 class="mb-0 text-warning fw-bold"><span id="p_wood">0</span> ฿</h2>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 mb-3">
+          <div class="card shadow-sm border-0 border-start border-5 border-dark p-4 rounded-4">
+            <h5 class="text-muted">มูลค่าถ่านไบโอชาร์ที่คุณผลิตได้</h5>
+            <h2 class="mb-0 text-dark fw-bold"><span id="p_biochar">0</span> ฿</h2>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card shadow-sm border-0 mb-4 rounded-4">
+        <div class="card-body p-4">
+          <h5 class="text-center fw-bold mb-4">เปรียบเทียบต้นทุนรวมต่อเดือน (ก่อน vs หลังใช้เตา)</h5>
+          <div style="max-height: 400px; position: relative;">
+            <canvas id="costChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div id="adminMenu" class="card shadow-sm border-0 bg-warning bg-opacity-10 mt-5 mb-4 rounded-4" style="display: none;">
+        <div class="card-body p-4">
+          <h5 class="text-danger fw-bold mb-3">⚙️ เมนูผู้ดูแลระบบ (Admin)</h5>
+          <p class="text-muted">ค้นหาเบอร์โทรศัพท์ของเกษตรกรเพื่อเข้าไปดูหรือแก้ไขข้อมูล</p>
+          <div class="input-group input-group-lg">
             <input type="text" id="adminSearchPhone" class="form-control" placeholder="เบอร์โทรเกษตรกร (10 หลัก)" maxlength="10">
-            <button class="btn btn-danger" onclick="adminEditData()">ค้นหา & แก้ไข</button>
+            <button class="btn btn-danger px-4 fw-bold" onclick="adminEditData()">ค้นหา & แก้ไข</button>
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="text-center mt-5 mb-5 text-muted">
+    <small>พัฒนาระบบโดย ผศ.ธีรพงศ์ สงผัด และคณะวิจัย<br>มหาวิทยาลัยราชภัฏศรีสะเกษ</small>
   </div>
 
   <script>
@@ -84,14 +136,17 @@
     async function loadDashboard(phone) {
       try {
         const res = await fetch(API_URL, { 
-          method: "POST", 
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify({ action: "dashboard", phone: phone }) 
         }).then(r => r.json());
 
         if (res.success) {
           document.getElementById("g_farmers").innerText = res.global.totalFarmers;
           document.getElementById("g_area").innerText = res.global.totalArea.toLocaleString();
+          document.getElementById("g_trees").innerText = res.global.totalTrees.toLocaleString();
+          document.getElementById("g_wood").innerText = res.global.globalWoodVinegar.toLocaleString();
+          document.getElementById("g_biochar").innerText = res.global.globalBiochar.toLocaleString();
+          
           if(res.personal) {
             document.getElementById("p_wood").innerText = res.personal.myWoodVinegarVal.toLocaleString();
             document.getElementById("p_biochar").innerText = res.personal.myBiocharVal.toLocaleString();
@@ -106,8 +161,8 @@
       if (myChart) myChart.destroy();
       myChart = new Chart(ctx, {
         type: 'bar',
-        data: { labels: ['ต้นทุนฐานเดิม', 'ต้นทุนเดือนล่าสุด'], datasets: [{ data: [baseCost, currCost], backgroundColor: ['#dc3545', '#28a745'], borderRadius: 5 }] },
-        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+        data: { labels: ['ต้นทุนฐานเดิม', 'ต้นทุนเดือนล่าสุด'], datasets: [{ data: [baseCost, currCost], backgroundColor: ['#dc3545', '#28a745'], borderRadius: 8 }] },
+        options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
       });
     }
 
