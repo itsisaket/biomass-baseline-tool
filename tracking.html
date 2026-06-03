@@ -5,69 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ระบบติดตามรายเดือน</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>.nav-tabs .nav-link.active { color: #0d6efd; border-bottom: 3px solid #0d6efd; font-weight: bold;}</style>
 </head>
 <body class="bg-light" style="font-family: 'Sarabun', sans-serif;">
 
   <div class="container-fluid mt-4 mb-5 px-3 px-lg-5">
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 bg-white p-3 p-md-4 rounded-4 shadow-sm border-start border-5 border-primary">
       <div class="mb-2 mb-md-0">
-        <h4 class="mb-0 text-primary fw-bold">ระบบบันทึกรายเดือน</h4>
+        <h4 class="mb-0 text-primary fw-bold">ระบบบันทึกรายเดือน (ติดตามผล)</h4>
         <span class="text-muted fs-6" id="displayUser"></span>
       </div>
       <a href="index.html" class="btn btn-outline-secondary px-4">← กลับหน้าแรก</a>
     </div>
 
-    <ul class="nav nav-tabs mb-4 flex-nowrap fs-5">
-      <li class="nav-item"><button class="nav-link active fw-bold px-4" onclick="switchTab('t4', '4_Tracking_Before')">ก่อนใช้เตา</button></li>
-      <li class="nav-item"><button class="nav-link fw-bold px-4" onclick="switchTab('t5', '5_Tracking_After')">หลังใช้เตา</button></li>
-    </ul>
-
-    <div id="t4" class="tab-content">
-      <div class="card shadow-sm border-0 rounded-4">
-        <div class="card-body p-4 p-lg-5">
-          <form id="form_4_Tracking_Before" onsubmit="submitData(event, '4_Tracking_Before')">
-            <h5 class="text-secondary fw-bold border-bottom pb-3 mb-4">ข้อมูลเดือนที่ต้องการบันทึก (ก่อนใช้เตา)</h5>
-            <div class="row mb-5">
-              <div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ปี (พ.ศ.)</label><input type="number" class="form-control form-control-lg" name="year" value="2569" required onchange="fetchTrackingData('4_Tracking_Before')"></div>
-              <div class="col-12 col-md-6"><label class="form-label text-muted">เดือน</label><select class="form-select form-select-lg" name="month" onchange="fetchTrackingData('4_Tracking_Before')"><option value="ม.ค.">ม.ค.</option><option value="ก.พ.">ก.พ.</option><option value="มี.ค.">มี.ค.</option><option value="เม.ย.">เม.ย.</option><option value="พ.ค.">พ.ค.</option><option value="มิ.ย.">มิ.ย.</option><option value="ก.ค.">ก.ค.</option><option value="ส.ค.">ส.ค.</option><option value="ก.ย.">ก.ย.</option><option value="ต.ค.">ต.ค.</option><option value="พ.ย.">พ.ย.</option><option value="ธ.ค.">ธ.ค.</option></select></div>
-            </div>
-            
-            <h5 class="text-secondary fw-bold border-bottom pb-3 mb-4">ต้นทุนการเกษตรรายเดือน</h5>
-            <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ค่าสารเคมี</label><input type="number" class="form-control form-control-lg t4-cost" name="track_pest"></div><div class="col-12 col-md-6"><label class="form-label text-muted">ค่าปุ๋ยเคมี</label><input type="number" class="form-control form-control-lg t4-cost" name="track_chem_fert"></div></div>
-            <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ค่าฮอร์โมน/ปุ๋ยน้ำ</label><input type="number" class="form-control form-control-lg t4-cost" name="track_liq_fert"></div><div class="col-12 col-md-6"><label class="form-label text-muted">ค่าแรงงาน</label><input type="number" class="form-control form-control-lg t4-cost" name="track_labor"></div></div>
-            <div class="row mb-5"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ค่าอื่นๆ</label><input type="number" class="form-control form-control-lg t4-cost" name="track_other"></div><div class="col-12 col-md-6"><label class="form-label text-muted">รวมต้นทุน (บาท)</label><input type="number" class="form-control form-control-lg bg-light text-danger fw-bold fs-4" name="track_total" id="t4_total" readonly></div></div>
-            
-            <button type="submit" class="btn btn-secondary btn-lg w-100 py-3 fw-bold rounded-pill">💾 บันทึกข้อมูลเดือนนี้</button>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <div id="t5" class="tab-content" style="display: none;">
-      <div class="card shadow-sm border-0 rounded-4">
-        <div class="card-body p-4 p-lg-5">
-          <form id="form_5_Tracking_After" onsubmit="submitData(event, '5_Tracking_After')">
-             <h5 class="text-primary fw-bold border-bottom pb-3 mb-4">ข้อมูลเดือนที่ต้องการบันทึก (หลังใช้เตาชีวมวล)</h5>
-             <div class="row mb-5">
-              <div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ปี (พ.ศ.)</label><input type="number" class="form-control form-control-lg" name="year" value="2569" required onchange="fetchTrackingData('5_Tracking_After')"></div>
-              <div class="col-12 col-md-6"><label class="form-label text-muted">เดือน</label><select class="form-select form-select-lg" name="month" onchange="fetchTrackingData('5_Tracking_After')"><option value="ม.ค.">ม.ค.</option><option value="ก.พ.">ก.พ.</option><option value="มี.ค.">มี.ค.</option><option value="เม.ย.">เม.ย.</option><option value="พ.ค.">พ.ค.</option><option value="มิ.ย.">มิ.ย.</option><option value="ก.ค.">ก.ค.</option><option value="ส.ค.">ส.ค.</option><option value="ก.ย.">ก.ย.</option><option value="ต.ค.">ต.ค.</option><option value="พ.ย.">พ.ย.</option><option value="ธ.ค.">ธ.ค.</option></select></div>
-            </div>
-            
-            <h5 class="text-success fw-bold border-bottom pb-3 mb-4">ผลผลิตนวัตกรรมที่ได้</h5>
-            <div class="row mb-5 p-4 bg-light rounded-4 border border-success">
-              <div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-success fw-bold">มูลค่าน้ำส้มควันไม้ที่ผลิตได้ (บาท)</label><input type="number" class="form-control form-control-lg border-success" name="track_wood_vinegar"></div>
-              <div class="col-12 col-md-6"><label class="form-label text-success fw-bold">มูลค่าถ่านไบโอชาร์ที่ผลิตได้ (บาท)</label><input type="number" class="form-control form-control-lg border-success" name="track_biochar"></div>
-            </div>
-             
-            <h5 class="text-primary fw-bold border-bottom pb-3 mb-4">ต้นทุนการเกษตรรายเดือน (รอบใหม่)</h5>
-            <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ค่าสารเคมี</label><input type="number" class="form-control form-control-lg t5-cost" name="track_pest"></div><div class="col-12 col-md-6"><label class="form-label text-muted">ค่าปุ๋ยเคมี</label><input type="number" class="form-control form-control-lg t5-cost" name="track_chem_fert"></div></div>
-            <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ค่าฮอร์โมน/ปุ๋ยน้ำ</label><input type="number" class="form-control form-control-lg t5-cost" name="track_liq_fert"></div><div class="col-12 col-md-6"><label class="form-label text-muted">ค่าแรงงาน</label><input type="number" class="form-control form-control-lg t5-cost" name="track_labor"></div></div>
-            <div class="row mb-5"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ค่าอื่นๆ</label><input type="number" class="form-control form-control-lg t5-cost" name="track_other"></div><div class="col-12 col-md-6"><label class="form-label text-muted">รวมต้นทุนใหม่ (บาท)</label><input type="number" class="form-control form-control-lg bg-light text-danger fw-bold fs-4" name="track_total" id="t5_total" readonly></div></div>
-            
-            <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-bold rounded-pill">💾 บันทึกข้อมูลเดือนนี้</button>
-          </form>
-        </div>
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-body p-4 p-lg-5">
+        <form id="form_5_Tracking_After" onsubmit="submitData(event, '5_Tracking_After')">
+           <h5 class="text-primary fw-bold border-bottom pb-3 mb-4">ข้อมูลรอบเดือนที่ต้องการบันทึก</h5>
+           <div class="row mb-5">
+            <div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ปี (พ.ศ.)</label><input type="number" class="form-control form-control-lg" name="year" value="2569" required onchange="fetchTrackingData()"></div>
+            <div class="col-12 col-md-6"><label class="form-label text-muted">เดือน</label><select class="form-select form-select-lg" name="month" onchange="fetchTrackingData()"><option value="ม.ค.">ม.ค.</option><option value="ก.พ.">ก.พ.</option><option value="มี.ค.">มี.ค.</option><option value="เม.ย.">เม.ย.</option><option value="พ.ค.">พ.ค.</option><option value="มิ.ย.">มิ.ย.</option><option value="ก.ค.">ก.ค.</option><option value="ส.ค.">ส.ค.</option><option value="ก.ย.">ก.ย.</option><option value="ต.ค.">ต.ค.</option><option value="พ.ย.">พ.ย.</option><option value="ธ.ค.">ธ.ค.</option></select></div>
+          </div>
+          
+          <h5 class="text-success fw-bold border-bottom pb-3 mb-4">ผลผลิตนวัตกรรมที่ได้</h5>
+          <div class="row mb-5 p-4 bg-light rounded-4 border border-success">
+            <div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-success fw-bold">มูลค่าน้ำส้มควันไม้ที่ผลิตได้ (บาท)</label><input type="number" class="form-control form-control-lg border-success" name="track_wood_vinegar"></div>
+            <div class="col-12 col-md-6"><label class="form-label text-success fw-bold">มูลค่าถ่านไบโอชาร์ที่ผลิตได้ (บาท)</label><input type="number" class="form-control form-control-lg border-success" name="track_biochar"></div>
+          </div>
+           
+          <h5 class="text-primary fw-bold border-bottom pb-3 mb-4">ต้นทุนการเกษตรรายเดือน (รอบปัจจุบัน)</h5>
+          <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ค่าสารเคมี</label><input type="number" class="form-control form-control-lg t5-cost" name="track_pest"></div><div class="col-12 col-md-6"><label class="form-label text-muted">ค่าปุ๋ยเคมี</label><input type="number" class="form-control form-control-lg t5-cost" name="track_chem_fert"></div></div>
+          <div class="row mb-4"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ค่าฮอร์โมน/ปุ๋ยน้ำ</label><input type="number" class="form-control form-control-lg t5-cost" name="track_liq_fert"></div><div class="col-12 col-md-6"><label class="form-label text-muted">ค่าแรงงาน</label><input type="number" class="form-control form-control-lg t5-cost" name="track_labor"></div></div>
+          <div class="row mb-5"><div class="col-12 col-md-6 mb-3 mb-md-0"><label class="form-label text-muted">ค่าอื่นๆ</label><input type="number" class="form-control form-control-lg t5-cost" name="track_other"></div><div class="col-12 col-md-6"><label class="form-label text-muted">รวมต้นทุนใหม่ (บาท)</label><input type="number" class="form-control form-control-lg bg-light text-danger fw-bold fs-4" name="track_total" id="t5_total" readonly></div></div>
+          
+          <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-bold rounded-pill">💾 บันทึกข้อมูลเดือนนี้</button>
+        </form>
       </div>
     </div>
   </div>
@@ -87,23 +58,16 @@
           currentUserPhone = loggedPhone;
           document.getElementById("displayUser").innerText = localStorage.getItem("loggedName");
         }
-        fetchTrackingData('4_Tracking_Before');
+        fetchTrackingData();
       }
     };
 
-    function switchTab(tabId, sheetName) {
-      document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-      document.getElementById(tabId).style.display = 'block'; event.target.classList.add('active');
-      fetchTrackingData(sheetName);
-    }
-
-    async function fetchTrackingData(sheetName) {
-      const form = document.getElementById(`form_${sheetName}`);
+    async function fetchTrackingData() {
+      const form = document.getElementById('form_5_Tracking_After');
       const m = form.elements['month'].value, y = form.elements['year'].value;
       const res = await fetch(API_URL, { 
         method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ action: "read", sheetName, phone: currentUserPhone, month: m, year: y }) 
+        body: JSON.stringify({ action: "read", sheetName: '5_Tracking_After', phone: currentUserPhone, month: m, year: y }) 
       }).then(r => r.json());
       
       form.reset(); form.elements['month'].value = m; form.elements['year'].value = y;
@@ -118,19 +82,17 @@
       try {
         const res = await fetch(API_URL, { 
           method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ action: "save", sheetName, phone: currentUserPhone, data: dataObj }) 
+          body: JSON.stringify({ action: "save", sheetName: sheetName, phone: currentUserPhone, data: dataObj }) 
         }).then(r => r.json());
         alert(res.message);
       } catch (e) { alert("บันทึกไม่สำเร็จ"); }
       btn.innerText = originalText; btn.disabled = false;
     }
 
-    ['t4', 't5'].forEach(prefix => {
-      document.querySelectorAll(`.${prefix}-cost`).forEach(input => {
-        input.addEventListener('input', () => {
-          let total = 0; document.querySelectorAll(`.${prefix}-cost`).forEach(inp => total += Number(inp.value) || 0);
-          document.getElementById(`${prefix}_total`).value = total;
-        });
+    document.querySelectorAll('.t5-cost').forEach(input => {
+      input.addEventListener('input', () => {
+        let total = 0; document.querySelectorAll('.t5-cost').forEach(inp => total += Number(inp.value) || 0);
+        document.getElementById('t5_total').value = total;
       });
     });
   </script>
